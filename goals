@@ -5,3 +5,16 @@
   chess-likes.
 - ideally, have some sort of meta-METAGAME for designing fair games (with some
   kind of focus?)
+
+----
+
+- Chess-like game generator.
+- Start with METAGAME-style syntax specifying max board size, max piece #, some
+  general rules.
+- Feed to game generator, which outputs valid GDL describing a game that meets
+  specifications.
+
+-- Start by translating the basic concepts of METAGAME into GDL: board size,
+   board-ness, movements, piece ownership...
+
+-- Will need to define board boundaries, directions, how movement works.
