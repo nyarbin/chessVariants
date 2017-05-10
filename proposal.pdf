@@ -1,0 +1,126 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<< /F1 2 0 R /F2 3 0 R /F3 5 0 R >>
+endobj
+2 0 obj
+<< /BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font >>
+endobj
+3 0 obj
+<< /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font >>
+endobj
+4 0 obj
+<< /A << /S /URI /Type /Action /URI (http://logic.stanford.edu/classes/cs227/2012/readings/gdl_spec.pdf) >> /Border [ 0 0 0 ] /Rect [ 162.196 671.0236 182.756 683.0236 ] /Subtype /Link /Type /Annot >>
+endobj
+5 0 obj
+<< /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding /Name /F3 /Subtype /Type1 /Type /Font >>
+endobj
+6 0 obj
+<< /Annots [ 4 0 R ] /Contents 12 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 11 0 R /Resources << /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ] >> /Rotate 0 
+  /Trans <<  >> /Type /Page >>
+endobj
+7 0 obj
+<< /Outlines 9 0 R /PageLabels 13 0 R /PageMode /UseNone /Pages 11 0 R /Type /Catalog >>
+endobj
+8 0 obj
+<< /Author () /CreationDate (D:20170310142614+05'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20170310142614+05'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title (Automatic Design of Chess Variants) /Trapped /False >>
+endobj
+9 0 obj
+<< /Count 1 /First 10 0 R /Last 10 0 R /Type /Outlines >>
+endobj
+10 0 obj
+<< /Dest [ 6 0 R /XYZ 62.69291 593.0236 0 ] /Parent 9 0 R /Title (Notes on Generalizing Chess) >>
+endobj
+11 0 obj
+<< /Count 1 /Kids [ 6 0 R ] /Type /Pages >>
+endobj
+12 0 obj
+<< /Length 3125 >>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 741.0236 cm
+q
+BT 1 0 0 1 0 4 Tm 62.68488 0 Td 24 TL /F2 20 Tf 0 0 0 rg (Automatic Design of Chess Variants) Tj T* -62.68488 0 Td ET
+Q
+Q
+q
+1 0 0 1 62.69291 635.0236 cm
+q
+BT 1 0 0 1 0 86 Tm .239984 Tw 12 TL /F1 10 Tf 0 0 0 rg (There are well-known heuristics for designing good games of various kinds, most of which revolve around) Tj T* 0 Tw .599431 Tw (making sure that players do not have dominant options at most major decision points \(in fact, the lack of) Tj T* 0 Tw .428935 Tw (dominant options is kind of what makes a decision point "major" in the first place\). I would like to develop) Tj T* 0 Tw 1.96284 Tw (these relatively vague heuristics for human designers into conditions on the game tree for chess-like) Tj T* 0 Tw .74436 Tw (games instantiated in ) Tj 0 0 .501961 rg (GDL) Tj 0 0 0 rg (. I will define generalized classes for chess pieces, based on how they move,) Tj T* 0 Tw .372988 Tw (and work out heuristics for their effect on the game tree. The ultimate goal will be a program that takes in) Tj T* 0 Tw .426988 Tw (a board size and some conditions on the armies of each player, and returns the setup and rules for a fun) Tj T* 0 Tw (chess variant, possibly with simple fairy pieces.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 605.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .171894 Tw (It would be nice to be able to test the heuristics, but I'm not sure it's feasible, since the audience for chess) Tj T* 0 Tw (variants is rather small to begin with.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 572.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Notes on Generalizing Chess) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 542.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .49332 Tw (Chess is hard to generalize when we're dealing with the problem of analyzing the game tree for play, but) Tj T* 0 Tw (it's relatively easy to generalize from a game design standpoint.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 512.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL 1.636098 Tw (The most important part of a chess piece's movement is the number of squares it can reach, both in) Tj T* 0 Tw (general and on any given turn. The other important piece is whether it can be blocked.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 482.0236 cm
+q
+BT 1 0 0 1 0 14 Tm .621488 Tw 12 TL /F1 10 Tf 0 0 0 rg (Knights can be treated as pieces which are allowed to move one space at a 30 or 60 degree angle from) Tj T* 0 Tw (the row/column directions. I will probably ) Tj /F3 10 Tf (not ) Tj /F1 10 Tf (deal with pieces that are allowed true jumps, but might.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 440.0236 cm
+q
+BT 1 0 0 1 0 26 Tm .341751 Tw 12 TL /F1 10 Tf 0 0 0 rg (Pawns are the hardest pieces to incorporate into a general scheme for chess; I will almost certainly leave) Tj T* 0 Tw 1.239988 Tw (off the initial double move \(and therefore ) Tj /F3 10 Tf (en passant) Tj /F1 10 Tf (, and I may or may not just replace them with the) Tj T* 0 Tw (forward-capturing pawns seen in other descendants of the original game.) Tj T* ET
+Q
+Q
+ 
+endstream
+endobj
+13 0 obj
+<< /Nums [ 0 14 0 R ] >>
+endobj
+14 0 obj
+<< /S /D /St 1 >>
+endobj
+xref
+0 15
+0000000000 65535 f
+0000000075 00000 n
+0000000129 00000 n
+0000000239 00000 n
+0000000354 00000 n
+0000000573 00000 n
+0000000691 00000 n
+0000000918 00000 n
+0000001025 00000 n
+0000001320 00000 n
+0000001396 00000 n
+0000001513 00000 n
+0000001576 00000 n
+0000004758 00000 n
+0000004802 00000 n
+trailer
+<< /ID 
+ % ReportLab generated PDF document -- digest (http://www.reportlab.com)
+ [(\231\2650w\022\310\351\265Mq\025\351=\225\353\203) (\231\2650w\022\310\351\265Mq\025\351=\225\353\203)]
+ /Info 8 0 R /Root 7 0 R /Size 15 >>
+startxref
+4839
+%%EOF

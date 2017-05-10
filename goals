@@ -1,0 +1,7 @@
+- Extend? METAGAME game design workbench.
+- METAGAME doesn't really deal with fairness; only generates symmetrical games.
+- if we translate from METAGAME output to gdl, we can test games for fairness
+  with eg cadiaplayer (assuming it compiles); note that many GGPs are "bad" at
+  chess-likes.
+- ideally, have some sort of meta-METAGAME for designing fair games (with some
+  kind of focus?)

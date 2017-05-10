@@ -1,0 +1,38 @@
+Most generalized games are NP complete (see possibly
+http://www.scottaaronson.com/papers/pnp.pdf).
+
+We can actually view playing a one-player game as an attempt to generate a
+solution to an instance of a generalized game. Two-player games can be modelled
+as a pair of TMs that accept (ideally) complementary sets, each attempting to
+manipulate a shared input such that only one accepts.
+
+Most generalized games have non-fun instances. For a simple example, a
+minesweeper grid that is all blank or all mines would not be fun for most
+people. Similarly, a grid where no "quick" variable elimination is ever possible
+would not be fun to play. (Note that in both cases it is very hard to define a
+notion of "progress" through the puzzle - it is never reduced to a more
+tractable puzzle except when it is reduced to a trivial puzzle. I suspect that
+"fun" instances of games have common mathematical properties, probably related
+to the dynamics of their complexity as players make moves. I would like to study
+these properties for one- or two-player games, and see if there is a way to
+determine from the generalized form of a game how often its instances will be
+"fun", and ideally which instances will be fun.
+
+Almost certainly anything I do for the two-player case will be focused on
+partisan games. Fairy chess is a nice one to base things on, because it is very
+simple.
+
+Suspected components of fun:
+
+- Subtrees of the game tree should have depth differing by no more than 1.
+
+- Given a node in the game tree, children of that node should have a number of
+  children somewhat less than the height of the tree.
+
+Consider a general description of possible simple chess pieces on a board of
+size k. Generate a "fun" fairy chess game.
+
+Need to figure out what piece properties are available, and how those piece
+properties change the game tree. It's easy to see how they change the bottom of
+the game tree, but it's hard to figure out how the initial position changes the
+top of the game tree.
