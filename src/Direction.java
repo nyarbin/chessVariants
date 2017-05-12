@@ -4,11 +4,13 @@ public class Direction {
    private int dY;
 
    public Direction() {
-      this.dX = 0;
+      this.dX = 1;
       this.dY = 0;
    }
 
    public Direction(int dX, int dY) {
+      if (dX == 0 && dY == 0)
+        dX = 1;
       this.dX = dX;
       this.dY = dY;
    }
@@ -26,15 +28,15 @@ public class Direction {
       return dX > 0;
    }
 
-   public Direction forSym() {
+   public Direction forwSymm() {
       return new Direction(dX, -1 * dY);
    }
 
-   public Direction sideSym() {
+   public Direction sideSymm() {
       return new Direction(-1 * dX, dY);
    }
 
-   public Direction rotSym() {
+   public Direction diagSymm() {
       return new Direction(dY, dX);
    }
 

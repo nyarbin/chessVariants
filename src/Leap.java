@@ -1,7 +1,12 @@
+import java.util.Random;
 /** An immediate move, does not depend on other pieces (jumps over others) */
 public class Leap extends Move {
   public Leap() {
     // just calls super()
+  }
+
+  public Leap(Random random) {
+    super(random);
   }
 
   public Leap(Leap other) {
