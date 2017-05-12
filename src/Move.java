@@ -32,4 +32,14 @@ public abstract class Move {
       this.symmetries.add(symm);
     this.baseDir = new Direction(other.baseDir);
   }
+
+  @Override
+  public String toString() {
+    String str = "Direction: " + this.baseDir.toString() + " Symmetries: [";
+    for (Symmetry symm : this.symmetries)
+      str += symm.name() + ", ";
+    str = str.substring(0, str.length() - 2);
+    str += "]";
+    return str;
+  }
 }

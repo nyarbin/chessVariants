@@ -22,4 +22,9 @@ public class Ride extends Move {
   public int getCost() {
     return 0;
   }
+
+  @Override
+  public String toString() {
+    return super.toString() + " Distance: " + Integer.toString(this.distance);
+  }
 }

@@ -34,4 +34,15 @@ public class Piece {
       this.cost += cap.getCost();
     return this.cost;
   }
+
+  @Override
+  public String toString() {
+    String str = "Movements: ";
+    for (Move move : this.movements)
+      str += move.toString() + "\n";
+    str += "Captures: ";
+    for (Move cap : this.captures)
+      str += cap.toString() + "\n";
+    return str;
+  }
 }

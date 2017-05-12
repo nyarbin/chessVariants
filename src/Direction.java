@@ -47,4 +47,9 @@ public class Direction {
    public int yDist() {
       return dY;
    }
+
+   @Override
+   public String toString() {
+      return "(" + Integer.toString(dX) + ", " + Integer.toString(dY) + ")";
+   }
 }

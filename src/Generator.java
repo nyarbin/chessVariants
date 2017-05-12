@@ -26,6 +26,8 @@ class Generator {
       selection();
       generation();
     }
+
+    printPieces();
   }
 
   private static void selection() {
@@ -34,5 +36,10 @@ class Generator {
 
   private static void generation() {
 
+  }
+
+  private static void printPieces() {
+    for (Piece piece : _pieces)
+      System.out.println(piece);
   }
 }
