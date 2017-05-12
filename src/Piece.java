@@ -35,6 +35,8 @@ public class Piece {
     return this.cost;
   }
 
+  //TODO move fetch function.
+
   @Override
   public String toString() {
     String str = "Movements: ";
