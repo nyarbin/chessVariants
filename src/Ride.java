@@ -1,19 +1,17 @@
 /** A move that is blocked by intervening pieces */
-public class Ride implements Move {
-  public enum RideDir {NONE, FORWARD, HORIZONTAL, BACKWARD, DIAGFORW, DIAGBACK}
-  private RideDir direction;
+public class Ride extends Move {
   private int distance;
 
   public Ride() {
-    this.direction = RideDir.NONE;
     this.distance = 0;
   }
-  /** Copy constructor */
+
   public Ride(Ride other) {
-    this.direction = other.direction;
+    super(other);
     this.distance = other.distance;
   }
 
+  @Override
   public int getCost() {
     return 0;
   }
