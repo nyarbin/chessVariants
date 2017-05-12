@@ -18,12 +18,15 @@ public class Piece {
     /* Start with single movement and single capture rule */
     int rand1 = generator.nextInt(2);
     if (rand1 == 0) {
-      piece.movements.add(new Ride());
-      piece.captures.add(new Ride((Ride)piece.movements.get(0)));
+      Ride ride = new Ride();
+      piece.movements.add(ride);
+      piece.captures.add(new Ride(ride));
     } else {
-      piece.movements.add(new Leap());
-      piece.captures.add(new Leap((Leap)piece.movements.get(0)));
+      Leap leap = new Leap();
+      piece.movements.add(leap);
+      piece.captures.add(new Leap(leap));
     }
+
     piece.calcCost();
     return piece;
   }
