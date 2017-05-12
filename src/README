@@ -1,3 +1,15 @@
 Generator README
 
 Generator uses genetic algorithm hopefully!
+
+Run using
+javac *.java
+java Generator
+
+TODOS:
+selection algorithm
+generation algorithm
+piece & movements to GDL
+more GDL! - placement phase, king phase, play phase
+cleanup/learn
+file for basic rules?

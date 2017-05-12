@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 /** Main generator class for chess variants */
 class Generator {
   public static final int BOARD_SIZE = 5;     // size of board (n by n grid)
@@ -29,19 +28,20 @@ class Generator {
 
     printPieces();
   }
-
+  /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
 
   }
-
+  /** Generates new pieces using genetic mutation and recombination */
   private static void generation() {
 
   }
-
+  /** Print details about all pieces */
   private static void printPieces() {
     for (Piece piece : _pieces)
       System.out.println(piece);
   }
+
   /** Basic info for GDL */
   private String headerInfo() {
     return "(role white)\n(role black)\n(init (control white)\n)";
