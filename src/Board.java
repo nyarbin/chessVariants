@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Board {
-   private Piece[][] board;
+  private Piece[][] board;
 
-   public Board(int xMax, int yMax) {
-      board = new Piece[xMax][yMax];
-   }
+  public Board(int xMax, int yMax) {
+    board = new Piece[xMax][yMax];
+  }
 }
