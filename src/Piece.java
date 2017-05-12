@@ -14,15 +14,18 @@ public class Piece {
   }
   /** Returns a randomly generated piece */
   public static Piece generatePiece(Random generator) {
-    piece = new Piece();
+    Piece piece = new Piece();
     /* Start with single movement and single capture rule */
-    rand1 = generator.nextInt(2);
+    int rand1 = generator.nextInt(2);
     if (rand1 == 0) {
-      movements.add(new Ride());
+      Ride ride = new Ride();
+      piece.movements.add(ride);
+      piece.captures.add(new Ride(ride));
     } else {
-      movements.add(new Leap());
+      Leap leap = new Leap();
+      piece.movements.add(leap);
+      piece.captures.add(new Leap(leap));
     }
-
 
     piece.calcCost();
     return piece;

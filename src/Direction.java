@@ -1,10 +1,21 @@
+/** Defines direction of movement, and transformations for symmetries */
 public class Direction {
    private int dX;
    private int dY;
 
+   public Direction() {
+      this.dX = 0;
+      this.dY = 0;
+   }
+
    public Direction(int dX, int dY) {
       this.dX = dX;
       this.dY = dY;
+   }
+
+   public Direction(Direction other) {
+      this.dX = other.dX;
+      this.dY = other.dY;
    }
 
    public boolean isForward() {
