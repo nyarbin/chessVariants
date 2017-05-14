@@ -21,6 +21,6 @@ public class Board {
   /** Print details about all pieces */
   public void printPieces() {
     for (Piece piece : this.pieces)
-      System.out.println(piece);
+      System.out.print(piece);
   }
 }

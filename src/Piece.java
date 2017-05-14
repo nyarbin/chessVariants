@@ -6,8 +6,12 @@ public class Piece {
   private List<Move> movements;
   private List<Move> captures;
   private int cost;
+  private int id;
+  private static int next_id;
+
   /** Constuctor to randomly generate a piece */
   public Piece(Random random) {
+    this.id = next_id++;
     this.movements = new ArrayList<Move>();
     this.captures = new ArrayList<Move>();
     this.movements.add(new Move(random));           // single random move for
@@ -24,9 +28,23 @@ public class Piece {
     return this.cost;
   }
 
+  ///Fetchers for available moves.
+  public List<Move> move() {
+    return this.movements;
+  }
+
+  public List<Move> capture() {
+    return this.captures;
+  }
+
+  public int ID() {
+    return this.id;
+  }
+
   @Override
   public String toString() {
-    String str = "Movements: ";
+    String str = "Piece_" + Integer.toString(this.id) + "\n";
+    str += "Movements: ";
     for (Move move : this.movements)
       str += move.toString() + "\n";
     str += "Captures: ";
