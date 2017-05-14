@@ -35,7 +35,14 @@ public class Piece {
     return this.cost;
   }
 
-  //TODO move fetch function.
+  ///Fetchers for available moves.
+  public List<Move> move() {
+    return this.movements;
+  }
+
+  public List<Move> capture() {
+    return this.captures;
+  }
 
   @Override
   public String toString() {
