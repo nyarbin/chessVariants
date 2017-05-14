@@ -61,7 +61,7 @@ public class Piece {
         cap.mutate(random);
   }
 
-  ///Fetchers for available moves.
+  // Fetchers for available moves.
   public List<Move> move() {
     return this.movements;
   }

@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Random;
 /** Main generator class for chess variants */
 class Generator {
-  private static final int NUM_ROUNDS = 100;    // # rounds for genetic algorithm
+  private static final int NUM_ROUNDS = 100;  // # rounds for genetic algorithm
   private static final int CANDIDATES = 4;    // number of candidate boards
   private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;

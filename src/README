@@ -10,8 +10,9 @@ TODOS:
 
 CLEANUP!!! - on genetic stuff
 - check for duplicate movements and resolve conflicts
-- test your picks for random probabilities!
-- braces -> get rid of your no brace statements...
+- test getDirections() in Symmetry
+- test everything!
+Hookup to cadiaplayer
 
 Move static GDL stuff to a file?
 

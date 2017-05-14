@@ -29,9 +29,9 @@ public class Board {
     /* Combine piece lists of both parents */
     for (Piece p1Piece : parent1.pieces)
       this.pieces.add(new Piece(p1Piece));
-    for (Piece p2Piece : parent1.pieces)
+    for (Piece p2Piece : parent2.pieces)
       this.pieces.add(new Piece(p2Piece));
-    /* Randomly remove until number of pieces = average of parent's */
+    /* Randomly remove pieces from board until # = average of parent boards */
     int numPieces = (parent1.pieces.size() + parent2.pieces.size()) / 2;
     while (this.pieces.size() > numPieces)
       this.pieces.remove(random.nextInt(this.pieces.size()));
