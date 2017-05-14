@@ -8,15 +8,13 @@ java Generator
 
 TODOS:
 
-Update Move and Ride to combine them
-Move static GDL stuff to a file?
-GdlWriter class
-multiple chess pieces per candidate in Generator. Board?
-Direction.abs()? Direction.maxDist()?
-+ at start!
+CLEANUP!!! - on genetic stuff
+- check for duplicate movements and resolve conflicts
+- test your picks for random probabilities!
+- braces -> get rid of your no brace statements...
 
-selection algorithm
-generation algorithm
+Move static GDL stuff to a file?
+
 piece & movements to GDL
 more GDL! - placement phase, king phase, play phase
 cleanup/learn

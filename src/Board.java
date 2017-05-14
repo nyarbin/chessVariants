@@ -10,17 +10,49 @@ public class Board {
 
   private static final int INIT_PIECES = 4;   // number of pieces initially
   private static final int MAX_PIECES = 8;    // max piece choices per candidate
-
   private List<Piece> pieces;
-
+  /** Randomly generates a board's pieces */
   public Board(Random random) {
     this.pieces = new ArrayList<Piece>();
-    for (int j = 0; j < INIT_PIECES; j++)
+    for (int i = 0; i < INIT_PIECES; i++)
       this.pieces.add(new Piece(random));
+  }
+  /** Copies all pieces from another board */
+  public Board(Board copyTarget) {
+    this.pieces = new ArrayList<Piece>();
+    for (Piece piece : copyTarget.pieces)
+      this.pieces.add(new Piece(piece));
+  }
+  /** Constructor for recombination of two boards */
+  public Board(Random random, Board parent1, Board parent2) {
+    this.pieces = new ArrayList<Piece>();
+    /* Combine piece lists of both parents */
+    for (Piece p1Piece : parent1.pieces)
+      this.pieces.add(new Piece(p1Piece));
+    for (Piece p2Piece : parent1.pieces)
+      this.pieces.add(new Piece(p2Piece));
+    /* Randomly remove until number of pieces = average of parent's */
+    int numPieces = (parent1.pieces.size() + parent2.pieces.size()) / 2;
+    while (this.pieces.size() > numPieces)
+      this.pieces.remove(random.nextInt(this.pieces.size()));
+  }
+
+  public void mutate(Random random) {
+    /* Add new random piece */
+    if (this.pieces.size() < MAX_PIECES && random.nextInt(10) == 0)
+      this.pieces.add(new Piece(random));
+    /* Remove random piece */
+    if (this.pieces.size() > INIT_PIECES && random.nextInt(10) == 0)
+      this.pieces.remove(random.nextInt(this.pieces.size()));
+    /* Mutate random pieces */
+    for (Piece piece : this.pieces) {
+      if (random.nextInt(2) == 0)
+        piece.mutate(random);
+    }
   }
   /** Print details about all pieces */
   public void printPieces() {
     for (Piece piece : this.pieces)
-      System.out.print(piece);
+      System.out.println(piece);
   }
 }

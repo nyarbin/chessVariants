@@ -10,9 +10,7 @@ public class Move {
   public Move(Random random) {
     this.symmetry = new Symmetry(random);
     this.baseDir = new Direction(random);
-    int dirMax = Math.max(Math.abs(this.baseDir.xDist()),
-                          Math.abs(this.baseDir.yDist()));
-    this.distance = random.nextInt((Board.BOARD_SIZE-1)/dirMax) + 1;
+    this.setDistance(random);
   }
   /** Copy constructor */
   public Move(Move copyTarget) {
@@ -34,6 +32,21 @@ public class Move {
        knight has 8 move, 8 protect. So make move worth 1/2 and protect worth 1?
     */
     return 0;
+  }
+  /** Generates a random distance based on baseDir vector */
+  public void setDistance(Random random) {
+    int dirMax = Math.max(Math.abs(this.baseDir.xDist()),
+                          Math.abs(this.baseDir.yDist()));
+    this.distance = random.nextInt((Board.BOARD_SIZE-1)/dirMax) + 1;
+  }
+
+  public void mutate(Random random) {
+    if (random.nextInt(4) == 0) {
+      this.baseDir = new Direction(random);
+      this.setDistance(random);
+    } else if (random.nextInt(2) == 0) {
+      this.symmetry = new Symmetry(random);
+    }
   }
 
   @Override
