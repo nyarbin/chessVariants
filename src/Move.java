@@ -10,7 +10,8 @@ public class Move {
   public Move(Random random) {
     this.symmetry = new Symmetry(random);
     this.baseDir = new Direction(random);
-    int dirMax = Math.max(this.baseDir.xDist(), this.baseDir.yDist());
+    int dirMax = Math.max(Math.abs(this.baseDir.xDist()),
+                          Math.abs(this.baseDir.yDist()));
     this.distance = random.nextInt((Generator.BOARD_SIZE-1)/dirMax) + 1;
   }
   /** Copy constructor */
