@@ -21,6 +21,14 @@ public class Move {
     this.distance = copyTarget.distance;
   }
 
+  public List<Direction> getDirections() {
+    return this.symmetry.getDirections(this.baseDir);
+  }
+
+  public int length() {
+    return this.distance;
+  }
+
   public int getCost() {
     /* 2, 4 (dist 1) full symm -> 8 travel, 8 protect
        1, 2 (dist 2) full symm -> 16 travel, 8 protect
