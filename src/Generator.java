@@ -67,8 +67,15 @@ class Generator {
     //TODO (needs addition)
     String toReturn = "";
 
-    // for (Move move: piece.moves) {
-    // }
+    int dx;
+    int dy;
+
+    for (Move move: piece.moves) {
+      dx = move.direction.xDist;
+      dy = move.direction.yDist;
+      //TODO actually generate the move
+
+    }
 
     return toReturn;
   }
