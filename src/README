@@ -7,6 +7,14 @@ javac *.java
 java Generator
 
 TODOS:
+
+Update Move and Ride to combine them
+Move static GDL stuff to a file?
+GdlWriter class
+multiple chess pieces per candidate in Generator. Board?
+Direction.abs()? Direction.maxDist()?
++ at start!
+
 selection algorithm
 generation algorithm
 piece & movements to GDL

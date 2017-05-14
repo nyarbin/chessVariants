@@ -1,55 +1,46 @@
-/** Defines direction of movement, and transformations for symmetries */
+import java.util.Random;
+/** Defines single direction of movement */
 public class Direction {
   private int dX;
   private int dY;
 
-  public Direction() {
-    this.dX = 1;
-    this.dY = 0;
-  }
-
   public Direction(int dX, int dY) {
-    if (dX == 0 && dY == 0)
-      dX = 1;
     this.dX = dX;
     this.dY = dY;
   }
 
-  public Direction(Direction other) {
-    this.dX = other.dX;
-    this.dY = other.dY;
+  public Direction(Random random) {
+    int maxMoveDist = Generator.BOARD_SIZE - 1;
+    do {       // dX and dY set in range [-(BOARD_SIZE-1), BOARD_SIZE-1]
+      this.dX = random.nextInt(maxMoveDist*2 + 1) - maxMoveDist;
+      this.dY = random.nextInt(maxMoveDist*2 + 1) - maxMoveDist;
+    } while (this.dX == 0 && this.dY == 0);
+  }
+
+  public Direction(Direction copyTarget) {
+    this.dX = copyTarget.dX;
+    this.dY = copyTarget.dY;
   }
 
   public boolean isForward() {
-    return dY > 0;
+    return this.dY > 0;
   }
 
   public boolean isRight() {
-    return dX > 0;
-  }
-
-  public Direction forwSymm() {
-    return new Direction(dX, -1 * dY);
-  }
-
-  public Direction sideSymm() {
-    return new Direction(-1 * dX, dY);
-  }
-
-  public Direction diagSymm() {
-    return new Direction(dY, dX);
+    return this.dX > 0;
   }
 
   public int xDist() {
-    return dX;
+    return this.dX;
   }
 
   public int yDist() {
-    return dY;
+    return this.dY;
   }
 
   @Override
   public String toString() {
-    return "(" + Integer.toString(dX) + ", " + Integer.toString(dY) + ")";
+    return "(" + Integer.toString(this.dX) + ", "
+           + Integer.toString(this.dY) + ")";
   }
 }

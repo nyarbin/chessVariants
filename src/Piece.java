@@ -1,28 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+/** Defines a piece and its movements */
 public class Piece {
   private List<Move> movements;
   private List<Move> captures;
   private int cost;
-
-  public Piece() {
-    this.movements = new ArrayList<Move>();
-    this.captures = new ArrayList<Move>();
-  }
   /** Constuctor to randomly generate a piece */
   public Piece(Random random) {
-    this();           // run Piece() constructor
-    if (random.nextInt(2) == 0) {
-      Ride ride = new Ride(random);
-      this.movements.add(ride);
-      this.captures.add(new Ride(ride));
-    } else {
-      Leap leap = new Leap(random);
-      this.movements.add(leap);
-      this.captures.add(new Leap(leap));
-    }
+    this.movements = new ArrayList<Move>();
+    this.captures = new ArrayList<Move>();
+    this.movements.add(new Move(random));           // single random move for
+    this.captures.add(new Move(movements.get(0)));  //  movement & capture
     this.calcCost();
   }
   /** Calculates the cost of a piece by summing costs of individual moves */
