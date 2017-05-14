@@ -3,30 +3,23 @@ import java.util.List;
 import java.util.Random;
 /** Main generator class for chess variants */
 class Generator {
-  public static final int BOARD_SIZE = 5;     // size of board (n by n grid)
-  public static final int PLACEMENT_ROWS = 1; // # ranks player places pieces in
-  public static final int MAX_PIECES = 5;     // max pieces per side (w/o king)
-  public static final int MAX_SCORE = 50;     // max score of pieces (w/ king)
-
-  private static final int NUM_ROUNDS = 100;
-  private static final int INIT_PIECES = 4;   // number of pieces initially
-  private static List<Piece> _pieces;         // piece list for current round
+  private static final int NUM_ROUNDS = 100;  // # rounds for genetic algorithm
+  private static final int CANDIDATES = 4;    // number of candidate boards
+  private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;
-
   /** Runs genetic algorithm to pick chess variants */
   public static void main(String args[]) {
     _random = new Random();
-    _pieces = new ArrayList<Piece>();
-    /* Initialize pieces */
-    for (int i = 0; i < INIT_PIECES; i++)
-      _pieces.add(new Piece(_random));
-    /* do genetic algorithm rounds */
+    /* Initialize candidates */
+    _candidates = new ArrayList<Board>();
+    for (int i = 0; i < CANDIDATES; i++)
+      _candidates.add(new Board(_random));
+    /* Do genetic algorithm rounds */
     for (int r = 0; r < NUM_ROUNDS; r++) {
       selection();
       generation();
     }
-
-    printPieces();
+    _candidates.get(0).printPieces();
   }
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
@@ -35,11 +28,6 @@ class Generator {
   /** Generates new pieces using genetic mutation and recombination */
   private static void generation() {
 
-  }
-  /** Print details about all pieces */
-  private static void printPieces() {
-    for (Piece piece : _pieces)
-      System.out.println(piece);
   }
 
   /** Basic info for GDL */

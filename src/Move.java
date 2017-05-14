@@ -12,7 +12,7 @@ public class Move {
     this.baseDir = new Direction(random);
     int dirMax = Math.max(Math.abs(this.baseDir.xDist()),
                           Math.abs(this.baseDir.yDist()));
-    this.distance = random.nextInt((Generator.BOARD_SIZE-1)/dirMax) + 1;
+    this.distance = random.nextInt((Board.BOARD_SIZE-1)/dirMax) + 1;
   }
   /** Copy constructor */
   public Move(Move copyTarget) {
