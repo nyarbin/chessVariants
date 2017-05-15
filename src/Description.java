@@ -7,10 +7,11 @@ public class Description {
   /** Construct the GDL to be printed. */
   public String gdlOutput(Board board) {
     ArrayList<Piece> pieces = board.armies();
-    String toReturn = headerInfo() + initialization() + baseRules() + base();
-    toReturn += stateDynamics();
+    String toReturn = headerInfo() + baseRules() + baseQueries() +
+      "piece_" + stateDynamics(Integer.toString(pieces.get(0).ID()));
     toReturn += endgame(pieces.get(0));
-    toReturn += placePhase(board.start(), board.len(), board.width(), pieces);
+    toReturn += placePhase(board.start(), board.len(), board.width(),
+        board.maxScore(), pieces);
     for (Piece piece : pieces) {
       toReturn += pieceMovement(piece);
     }
@@ -20,14 +21,18 @@ public class Description {
   }
 
   /** Basic info for GDL */
-  private String headerInfo() {
-    return "(role white)\n(role black)\n(init (control white))\n" +
-      "(init (phase placing))\n";
-  }
-
-  /** GDL sentences describing initial board state */
-  private String initialization() {
-    return "";
+  private String headerInfo(ArrayList<Piece> armyList) {
+    String toReturn  = "(role white)\n(role black)\n(init (control white))\n" +
+      "(init (phase placing))\n(init (white 0))\n(init (black 0))\n" +
+      "(init (placed 0))\n";
+    String pieceID;
+    String cost;
+    for (Piece piece : armyList.subList(1, armyList.length)) {
+      pieceID = "piece_" + Integer.toString(piece.ID());
+      cost = Integer.toString(piece.calcCost());
+      toReturn += "(" + pieceID + " " + cost + ")\n";
+    }
+    return toReturn;
   }
 
   private String endgame(Piece king) {
@@ -62,34 +67,89 @@ public class Description {
   /** The two basic move rules: noop off-turn; move on-turn. */
   private String baseRules() {
     String toReturn = "\n; The fundamental rules.\n";
-    toReturn += "(<= (legal ?player ?noop)\n (role ?player)\n" +
+    toReturn += "(<= (legal ?player noop)\n (role ?player)\n" +
       " (not (true (control ?player))) (true (phase playing)))\n";
     toReturn += "(<= (legal ?player ?move)\n (true (control ?player))\n" +
       " (okMove ?player ?move) (true (phase playing)))\n";
     toReturn += "(<= (legal ?player ?placement)\n (true (phase placing))\n" +
       " (okPlace ?player ?placement))\n";
+    toReturn += "(<= (legal ?player noop)\n (role ?player)\n" +
+      " (true (phase placing))\n (true (?player donePlacing)))\n";
     return toReturn;
   }
 
+  /** Base/input clauses */
+  private String baseQueries() {
+    return "";
+  }
+
   /** Placement phase logic. */
-  private string placePhase(int startRanks, int ranks, int files,
+  private string placePhase(int startRanks, int ranks, int files, int maxScore,
       ArrayList<Piece> armies) {
     String toReturn = "\n; How pieces get placed on the board.\n";
     toReturn += "(<= (okPlace ?player (place ?type ?x ?y))\n" +
       " (true (?player rank ?y))\n" +
       " (true (file ?x))\n" +
+      " (not (cell ?x ?y ?player ?piece))\n" +
       " (available ?player ?type))\n";
-    //TODO create "available" predicate, add ?player rank facts.
+    toReturn += "(<= (available ?player ?type)\n" +
+      " (not (mustPlaceKing ?player))\n" +
+      " (?type ?cost)\n (?player ?score)\n" +
+      " (add ?score ?cost ?nScore)\n" +
+      " (leq ?nScore " + Integer.toString(maxScore) + "))\n";
+    String kingID = "piece_" + Integer.toString(armies.get(0).ID());
+    toReturn += "(<= (available ?player " + kingID + ")\n" +
+      " (maxedOut ?player))\n";
+    toReturn += "(<= (available ?player " + kingID + ")\n" +
+      " (mustPlaceKing ?player))\n";
+    toReturn += "(<= (mustPlaceKing ?player)\n (placed " +
+      Integer.toString(startRanks * files - 1) + "))\n";
+    toReturn += "(<= (maxedOut ?player)\n" +
+      " (?type ?cost)\n (?player ?score)\n" +
+      " (add ?score ?cost ?nScore)\n" +
+      " (not (leq ?nScore " + Integer.toString(maxScore) + ")))\n";
+    for (int i = 0; i < startRanks; i++) {
+      toReturn += "(white rank " + Integer.toString(i) + ")\n";
+      toReturn += "(black rank " + Integer.toString(ranks-(i+1)) + ")\n";
+    }
     return toReturn;
   }
 
   /** State change logic */
-  private string stateDynamics() {
-    String toReturn = "\n; State change logic.\n";
+  private String stateDynamics(String kingID) {
+    String toReturn = "\n; Basic state change logic.\n";
     toReturn += "(<= (next (control ?opponent))\n (true (control ?player))\n" +
       " (opponent ?player ?opponent) (true (phase playing)))\n";
     toReturn += "(<= (next (step ?np1))\n (true (step ?n))\n (succ ?n ?np1))\n";
-    //TODO add logic to change phase from placing to playing.
+
+    toReturn += "\n; Placement phase state logic.\n";
+    toReturn +=
+      "(<= (next (placed ?np1))\n (true (placed ?n))\n (succ ?n ?np1))\n";
+    toReturn += "(<= (next (?player ?nscore))\n" +
+      " (does ?player (place ?piece ?x ?y))\n" +
+      " (?piece ?cost)\n (?player ?score)\n" +
+      " (add ?score ?cost ?nscore))\n";
+    toReturn += "(<= (next (phase playing))\n" +
+      " (true (done white))\n (true (done black))\n (true (phase placing)))\n";
+    toReturn += "(<= (next (step 0))\n" +
+      " (true (done white))\n (true (done black))\n (true (phase placing)))\n";
+    toReturn += "(<= (next (done ?player))\n" +
+      " (does ?player (place " + kingID + " ?x ?y)))\n";
+
+    toReturn += "\n; Cell state change logic.\n";
+    toReturn += "(<= (next (cell ?x ?y ?player ?piece))\n" +
+      " (true (cell ?x ?y ?player ?piece))\n" +
+      " (not (affected ?x ?y))\n";
+    toReturn += "(<= (affected ?x1 ?y1)\n" +
+      " (does ?player (move ?piece ?x1 ?y1 ?x2 ?y2)))\n";
+    toReturn += "(<= (affected ?x2 ?y2)\n" +
+      " (does ?player (move ?piece ?x1 ?y1 ?x2 ?y2)))\n";
+    toReturn += "(<= (affected ?x ?y)\n" +
+      " (does ?player (place ?piece ?x ?y)))\n";
+    toReturn += "(<= (next (cell ?x2 ?y2 ?player ?piece))\n" +
+      " (does ?player (move ?piece ?x1 ?y1 ?x2 ?y2)))\n";
+    toReturn += "(<= (next (cell ?x ?y ?player ?piece))\n" +
+      " (does ?player (place ?piece ?x ?y)))\n";
     return toReturn;
   }
 
@@ -158,11 +218,6 @@ public class Description {
     }
 
     return toReturn;
-  }
-
-  /** Base/input clauses */
-  private String base() {
-    return "";
   }
 
   /** GDL definitions for fundamental game constants. */
