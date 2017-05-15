@@ -3,13 +3,15 @@ Generator README
 Generator uses genetic algorithm hopefully!
 
 Run using
-javac *.java
-java Generator
+javac -cp ".:gson-2.8.0.jar" *.java
+java -cp ".:gson-2.8.0.jar" Generator
 
 TODOS:
 
 getCost() -> move from Move to Piece?
 Hookup to cadiaplayer
+
+Fix directories in Generator -> don't use your own, use relative!
 
 - Base/input clauses? (still don't quite understand how those work)
 - Check over GDL to make sure it's all good.
