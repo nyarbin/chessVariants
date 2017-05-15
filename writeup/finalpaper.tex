@@ -9,13 +9,18 @@
 \usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{biblatex}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
+
+\addbibresource{paper.bib}
 
 \title{TITLE HERE}
 
 \author{Ben Reis \\
-  ADDRESS \\
-  {\tt email}
+  Johns Hopkins University\\
+  3501 Saint Paul St.\\
+  Baltimore, MD 21218, USA\\
+  {\tt breis3@jhu.edu}
   \And
   Andrew Zhu \\
   Johns Hopkins University \\
@@ -32,6 +37,12 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 \end{abstract}
 
 \section{Introduction}
+%Intro here - what's the problem?
+
+\section{Encoding Chess-Like Games}
+% talk about GDL, METAGAME, automated game design
+
+\section{Introduction}
 
 
 \section{Encoding Chess-Like Games}
@@ -39,6 +50,13 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 \section{Search Algorithms}
 
 \section{Implementation}
+% Decided to have players place pieces to simplify game generation.
+\subsection{Generating Pieces}
+% talk about balance decisions
+
+\subsection{Encoding the Game}
+% talk about encoding decisions in GDL
+% cite speedchess; alloyGGP
 
 \section{Results}
 
@@ -50,31 +68,35 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 
 \section{Conclusion}
 
+\section{Future Work}
+% talk about refinements; ways to test things.
 
+\printbibliography
 
-\begin{thebibliography}{}
+% \begin{thebibliography}{}
+% 
+% \bibitem[\protect\citename{Srivastava et al.}2014]{Srivastava:14}
+% Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov.
+% \newblock 2014.
+% \newblock Dropout: A Simple Way to Prevent Neural Networks from Overfitting. {\em Journal of Machine Learning Research},15(2014):1929-1958.
+% 
+% \bibitem[\protect\citename{Nielson}2015]{Nielson:15}
+% Michael Nielson.
+% \newblock 2015.
+% \newblock Neural Networks and Deep Learning. {\em Determination Press}.
+% \newblock http://neuralnetworksanddeeplearning.com
+% 
+% \bibitem[\protect\citename{RGU}]{RGU}
+% Robert Gordon University.
+% \newblock The Backpropagation Algorithm.
+% \newblock https://www4.rgu.ac.uk/files/chapter3\%20-\%20bp.pdf
+% 
+% \bibitem[\protect\citename{Repo}2013]{Repo:13}
+% M. Lichman.
+% \newblock UCI Machine Learning Repository.
+% \newblock University of California, School of Information and Computer Science.
+% \newblock https://archive.ics.uci.edu/ml
+% \end{thebibliography}
 
-\bibitem[\protect\citename{Srivastava et al.}2014]{Srivastava:14}
-Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov.
-\newblock 2014.
-\newblock Dropout: A Simple Way to Prevent Neural Networks from Overfitting. {\em Journal of Machine Learning Research},15(2014):1929-1958.
-
-\bibitem[\protect\citename{Nielson}2015]{Nielson:15}
-Michael Nielson.
-\newblock 2015.
-\newblock Neural Networks and Deep Learning. {\em Determination Press}.
-\newblock http://neuralnetworksanddeeplearning.com
-
-\bibitem[\protect\citename{RGU}]{RGU}
-Robert Gordon University.
-\newblock The Backpropagation Algorithm.
-\newblock https://www4.rgu.ac.uk/files/chapter3\%20-\%20bp.pdf
-
-\bibitem[\protect\citename{Repo}2013]{Repo:13}
-M. Lichman.
-\newblock UCI Machine Learning Repository.
-\newblock University of California, School of Information and Computer Science.
-\newblock https://archive.ics.uci.edu/ml
-\end{thebibliography}
 
 \end{document}
