@@ -11,8 +11,5 @@ TODOS:
 getCost() -> move from Move to Piece?
 Hookup to cadiaplayer
 
-- Finish handling placement phase in GDL.
-- Go over state change logic.
-- Get king, endgame stuff into GDL.
 - Base/input clauses? (still don't quite understand how those work)
-- finish up (& possibly rearrange) init clauses.
+- Check over GDL to make sure it's all good.
