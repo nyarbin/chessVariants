@@ -4,11 +4,13 @@ import java.util.Random;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import com.google.gson.Gson;
 /** Main generator class for chess variants */
 class Generator {
   private static final int NUM_ROUNDS = 1;    // # rounds for genetic algorithm
   private static final int CANDIDATES = 4;    // number of candidate boards
-  private static final int NUM_TRIALS = 10;   // number of games per round
+  private static final int NUM_TRIALS = 1;    // number of games per round
+  private static final int NUM_SERVERS = 1;   // number of running servers
   private static final int BASE_PORT = 4000;  // base port number
   private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;
@@ -20,7 +22,7 @@ class Generator {
     for (int i = 0; i < CANDIDATES; i++)
       _candidates.add(new Board(_random));
     /* Do genetic algorithm rounds */
-    for (int j = 0; j < 2*NUM_TRIALS; j++)   // startup 2 players per server
+    for (int j = 0; j < 2*NUM_SERVERS; j++)   // startup 2 players per server
       Generator.startupCadiaPlayer(4000 + j);
     for (int r = 0; r < NUM_ROUNDS; r++) {
       Generator.generation();
@@ -51,8 +53,8 @@ class Generator {
     _candidates.add(new Board(_random, board1, board2));
   }
   /** Creates process that runs GGP server, given ports and game name */
-  private static Process startupGgpServer(String gameName, int trialNum) {
-    int port1 = BASE_PORT + 2 * trialNum;
+  private static Process startupGgpServer(String gameName, int serverNum) {
+    int port1 = BASE_PORT + 2 * serverNum;
     int port2 = port1 + 1;
     ProcessBuilder ggpPb;
     ggpPb = new ProcessBuilder("/bin/bash", "gameServerRunner.sh",
@@ -60,7 +62,7 @@ class Generator {
                                "127.0.0.1", Integer.toString(port1), "cadia1",
                                "127.0.0.1", Integer.toString(port2), "cadia2");
     ggpPb.directory(new File("/home/azhu8/Documents/DM425/ggp-base"));
-    File log = new File("ggp_" + gameName + ".log");
+    File log = new File("ggp_" + gameName + "_" + Integer.toString(serverNum) + ".log");
     ggpPb.redirectErrorStream(true);
     ggpPb.redirectOutput(Redirect.appendTo(log));
     try {
@@ -98,30 +100,36 @@ class Generator {
   }
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
-    Process pServer = Generator.startupGgpServer("ticTacToe223", 0);
-    try {
-      pServer.waitFor();
-    } catch (InterruptedException ex) {
-      System.out.println(ex.getMessage());
-    }
-    /*
     List<Process> servers = new ArrayList<Process>();
-    for (int b = 0; b < _candidates.size(); b++) {
+    for (int b = 0; b < 1; b++) {   //TODO: change back to b < candidates.size()
       //Generate gdl, put into file named chess<number>.kif in games/games/
-      for (int trial = 0; trial < NUM_TRIALS; trial++) {
-        servers.add(Generator.startupGgpServer(gameName, trial));
+      String gameName = "ticTacToe224";
+      int trial = 0;
+      while (trial < NUM_TRIALS) {
+        for (int s = 0; s < NUM_SERVERS; s++) {
+          servers.add(Generator.startupGgpServer(gameName, s));
+          trial++;
+        }
+        for (Process p : servers) {     // wait for all games to complete
+          try {
+            p.waitFor();
+          } catch (InterruptedException ex) {
+            System.out.println(ex.getMessage());
+          }
+        }
+        servers.clear();
       }
-      for (Process p : servers) {     // wait for all games to complete
-        try {
-          p.waitFor();
-        } catch (InterruptedException ex) {
-          System.out.println(ex.getMessage());
+      File resultDir = new File("/home/azhu8/Documents/DM425/ggp-base/" + gameName);
+      File[] fileList = resultDir.listFiles();
+      for (File file : fileList) {
+        String name = file.getName();
+        if (name.contains("json")) {
+          System.out.println(name);
+          // calc fitness!
         }
       }
-      //look in folder gameName/
-      //for each file in that folder, do something to calc fitness
     }
-    */
+
     //do tourney selection
     for (int i = 0; i < CANDIDATES; i++)   // for now, randomly pick survivors
       _candidates.remove(_random.nextInt(_candidates.size()));

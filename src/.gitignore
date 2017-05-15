@@ -3,3 +3,4 @@
 *.sw*
 .vim.custom
 *.log
+*.jar
