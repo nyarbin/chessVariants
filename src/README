@@ -11,9 +11,8 @@ TODOS:
 getCost() -> move from Move to Piece?
 Hookup to cadiaplayer
 
-Move static GDL stuff to a file?
-
-piece & movements to GDL
-more GDL! - placement phase, king phase, play phase
-cleanup/learn
-file for basic rules?
+- Finish handling placement phase in GDL.
+- Go over state change logic.
+- Get king, endgame stuff into GDL.
+- Base/input clauses? (still don't quite understand how those work)
+- finish up (& possibly rearrange) init clauses.

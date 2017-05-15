@@ -4,9 +4,24 @@ import java.util.List;
 /** Collection of functions to generate a game description. */
 public class Description {
 
+  /** Construct the GDL to be printed. */
+  public String gdlOutput(Board board) {
+    ArrayList<Piece> pieces = board.armies();
+    String toReturn = headerInfo() + initialization() + baseRules() + base();
+    toReturn += stateDynamics();
+    toReturn += placePhase(board.start(), board.len(), board.width(), pieces);
+    for (Piece piece : pieces) {
+      toReturn += pieceMovement(piece);
+    }
+    toReturn += constants(board.width(), board.len());
+    toReturn += math();
+    return toReturn;
+  }
+
   /** Basic info for GDL */
   private String headerInfo() {
-    return "(role white)\n(role black)\n(init (control white)\n)";
+    return "(role white)\n(role black)\n(init (control white))\n" +
+      "(init (phase placing)\n";
   }
 
   /** GDL sentences describing initial board state */
@@ -21,6 +36,30 @@ public class Description {
       " (not (true (control ?player))) (true (phase playing)))\n";
     toReturn += "(<= (legal ?player ?move)\n (true (control ?player))\n" +
       " (okMove ?player ?move) (true (phase playing)))\n";
+    toReturn += "(<= (legal ?player ?placement)\n (true (phase placing))\n" +
+      " (okPlace ?player ?placement))\n";
+    return toReturn;
+  }
+
+  /** Placement phase logic. */
+  private string placePhase(int startRanks, int ranks, int files,
+      ArrayList<Piece> armies) {
+    String toReturn = "\n; How pieces get placed on the board.\n";
+    toReturn += "(<= (okPlace ?player (place ?type ?x ?y))\n" +
+      " (true (?player rank ?y))\n" +
+      " (true (file ?x))\n" +
+      " (available ?player ?type))\n";
+    //TODO create "available" predicate, add ?player rank facts.
+    return toReturn;
+  }
+
+  /** State change logic */
+  private string stateDynamics() {
+    String toReturn = "\n; State change logic.\n";
+    toReturn += "(<= (next (control ?opponent))\n (true (control ?player))\n" +
+      " (opponent ?player ?opponent) (true (phase playing)))\n";
+    toReturn += "(<= (next (step ?np1))\n (true (step ?n))\n (succ ?n ?np1))\n";
+    //TODO add logic to change phase from placing to playing.
     return toReturn;
   }
 
@@ -30,10 +69,12 @@ public class Description {
     String type = "piece_" + Integer.toString(piece.ID());
     String mtype = "move_" + type;
     String ctype = "capture_" + type;
-    String toReturn = "\n; " + type + " move definitions.\n";
+
     //TODO check against speedchess.kif c 150-250
+    String toReturn = "\n; " + type + " move definitions.\n";
     toReturn += "(<= (okMove ?player (move " + type + " ?x1 ?y1 ?x2 ?y2))\n" +
       " (true (cell ?x1 ?y1 ?player " + type + "))\n" +
+      " (true (file ?x2))\n (true (rank ?y2))\n" + //necessary?
       " (" + mtype + " ?x1 ?y1 ?x2 ?y2)\n" +
       " (clearBtwn ?x1 ?y1 ?x2 ?y2)\n" +
       " (not (occupied ?x2 ?y2)))\n";
