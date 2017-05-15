@@ -10,7 +10,7 @@ public class Direction {
   }
 
   public Direction(Random random) {
-    int maxMoveDist = Generator.BOARD_SIZE - 1;
+    int maxMoveDist = Board.BOARD_SIZE - 1;
     do {       // dX and dY set in range [-(BOARD_SIZE-1), BOARD_SIZE-1]
       this.dX = random.nextInt(maxMoveDist*2 + 1) - maxMoveDist;
       this.dY = random.nextInt(maxMoveDist*2 + 1) - maxMoveDist;

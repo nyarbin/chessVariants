@@ -68,7 +68,6 @@ public class Description {
       }
     }
 
-
     //Generate captures.
     for (Move move: piece.captures) {
       for (Direction dir : move.getDirections()) {
@@ -112,7 +111,7 @@ public class Description {
     }
     return toReturn;
   }
-  
+
   /** GDL for arithmetic and board geometry */
   private String math() {
     String toReturn = "\n; Fundamental chess math.\n";
