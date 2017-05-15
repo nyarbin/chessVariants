@@ -20,19 +20,19 @@ public class Symmetry {
     this.side = copyTarget.side;
     this.forward = copyTarget.forward;
   }
-
+  /** Symmetry across the x axis */
   public Direction forwSymm(Direction dir) {
     return new Direction(dir.xDist(), -1 * dir.yDist(), dir.length());
   }
-
+  /** Symmetry across the y axis */
   public Direction sideSymm(Direction dir) {
     return new Direction(-1 * dir.xDist(), dir.yDist(), dir.length());
   }
-
+  /** Symmetry across the line y = x */
   public Direction diagSymm(Direction dir) {
     return new Direction(dir.yDist(), dir.xDist(), dir.length());
   }
-
+  /** Generate a list of directions by applying symmetry rules */
   public List<Direction> getDirections(Direction dir) {
     List<Direction> dirList = new ArrayList<Direction>();
     dirList.add(new Direction(dir));

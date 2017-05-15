@@ -10,7 +10,7 @@ public class Direction {
     this.dY = dY;
     this.rideLength = dist;
   }
-
+  /** Generate a random Direction based on board size */
   public Direction(Random random) {
     int maxMoveDist = Board.BOARD_SIZE - 1;
     do {       // dX and dY set in range [-(BOARD_SIZE-1), BOARD_SIZE-1]

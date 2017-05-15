@@ -36,7 +36,7 @@ public class Board {
     while (this.pieces.size() > numPieces)
       this.pieces.remove(random.nextInt(this.pieces.size()));
   }
-
+  /** Change a board's pieces randomly */
   public void mutate(Random random) {
     /* Add new random piece */
     if (this.pieces.size() < MAX_PIECES && random.nextInt(10) == 0)

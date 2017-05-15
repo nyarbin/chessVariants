@@ -31,8 +31,8 @@ public class Piece {
       this.captures.add(new Move(cap));
     this.calcCost();
   }
-  /** Get set of all movements given a list of moves */
-  public static List<Direction> getDirections(List<Move> moveList) {
+  /* Get set of all movements given a list of moves */
+  private static List<Direction> getDirections(List<Move> moveList) {
     List<Direction> dirList = new ArrayList<Direction>();
     for (Move cap : moveList)
       dirList.addAll(cap.getDirections());
@@ -50,15 +50,14 @@ public class Piece {
     }
     return dirList;
   }
-
+  /** Get full list of this piece's movement Directions */
   public List<Direction> getMoveDirections() {
     return Piece.getDirections(this.movements);
   }
-
+  /** Get full list of this piece's capture Directions */
   public List<Direction> getCaptureDirections() {
     return Piece.getDirections(this.captures);
   }
-
   /** Calculates the cost of a piece by summing costs of individual moves */
   public int calcCost() {
     this.cost = 0;
@@ -68,7 +67,7 @@ public class Piece {
       this.cost += cap.getCost();
     return this.cost;
   }
-
+  /** Change a piece's movements randomly */
   public void mutate(Random random) {
     /* Add new random move */
     if (this.movements.size() < MAX_MOVES && random.nextInt(4) == 0)

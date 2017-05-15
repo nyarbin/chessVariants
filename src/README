@@ -8,10 +8,7 @@ java Generator
 
 TODOS:
 
-CLEANUP!!! - on genetic stuff
-- check for duplicate movements and resolve conflicts
-- test getDirections() in Symmetry
-- test everything!
+getCost() -> move from Move to Piece?
 Hookup to cadiaplayer
 
 Move static GDL stuff to a file?
