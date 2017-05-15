@@ -73,6 +73,11 @@ public class Board {
     }
   }
 
+  /** Fetch piece list. */
+  public ArrayList<Piece> armies() {
+    return this.pieces;
+  }
+
   public int ID() {
     return this.id;
   }
