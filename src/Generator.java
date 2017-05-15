@@ -106,17 +106,17 @@ class Generator {
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
     /* Create GDL for each board */
-    /*PrintWriter gdl;
+    PrintWriter gdl;
     for (Board candidate : _candidates) {
       try {
-        gdl = new PrintWriter(Integer.toString(candidate.ID()) + ".kif");
-        //gdl.println(Description.gdlOutput(candidate));
+        gdl = new PrintWriter(Integer.toString("ChessVariant_" + candidate.ID()) + ".kif");
+        gdl.println(Description.gdlOutput(candidate));
         gdl.flush();
         gdl.close();
       } catch (FileNotFoundException ex) {
         System.out.println(ex.getMessage());
       }
-    }*/
+    }
     /* Evaluate each board */
     List<Process> servers = new ArrayList<Process>();
     for (int b = 0; b < 1; b++) {   //TODO: change back to b < candidates.size()
