@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.io.File;
+import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 /** Main generator class for chess variants */
 class Generator {
-  private static final int NUM_ROUNDS = 100;  // # rounds for genetic algorithm
+  private static final int NUM_ROUNDS = 1;  // # rounds for genetic algorithm
   private static final int CANDIDATES = 4;    // number of candidate boards
   private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;
@@ -43,6 +46,22 @@ class Generator {
   }
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
+    ProcessBuilder cadiaPb = new ProcessBuilder("/bin/bash", "test.sh", "3000");
+    cadiaPb.directory(new File("/home/azhu8/Documents/DM425/chessVariants/hello"));
+    File log = new File("log");
+    cadiaPb.redirectErrorStream(true);
+    cadiaPb.redirectOutput(Redirect.appendTo(log));
+    try {
+      Process p = cadiaPb.start();
+      if (cadiaPb.redirectInput() != Redirect.PIPE)
+        System.out.println("NOOO");
+      if (cadiaPb.redirectOutput().file() != log)
+        System.out.println("NO2");
+      if (p.getInputStream().read() != -1)
+        System.out.println("NO3");
+    } catch (IOException ex) {
+      System.out.println("EXCEPTION" + ex.getMessage());
+    }
     //run cadiaplayer on each candidate
     //get fitness values
     //do tourney selection
