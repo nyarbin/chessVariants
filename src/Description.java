@@ -47,49 +47,45 @@ public class Description {
     //Generate the moves.
     String dx;
     String dy;
-    for (Move move: piece.moves) {
-      for (Direction dir : move.getDirections()) {
-        dx = Integer.toString(dir.xDist());
-        dy = Integer.toString(dir.yDist());
-        toReturn += "(<= (" + mtype + " ?x1 ?y1 ?x2 ?y2)\n";
-        if (dx >= 0 && dy >= 0) {
-          toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        } else if (dx < 0 && dy >= 0) {
-          toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        } else if (dx >= 0 && dy < 0) {
-          toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        } else { //if (dx < 0 &&dy < 0)
-          toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        }
+    for (Direction dir : piece.getMoveDirections()) {
+      dx = Integer.toString(dir.xDist());
+      dy = Integer.toString(dir.yDist());
+      toReturn += "(<= (" + mtype + " ?x1 ?y1 ?x2 ?y2)\n";
+      if (dx >= 0 && dy >= 0) {
+        toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
+      } else if (dx < 0 && dy >= 0) {
+        toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
+      } else if (dx >= 0 && dy < 0) {
+        toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
+      } else { //if (dx < 0 &&dy < 0)
+        toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
       }
     }
-
 
     //Generate captures.
-    for (Move move: piece.captures) {
-      for (Direction dir : move.getDirections()) {
-        dx = Integer.toString(dir.xDist());
-        dy = Integer.toString(dir.yDist());
-        toReturn += "(<= (" + ctype + " ?x1 ?y1 ?x2 ?y2)\n";
-        if (dx >= 0 && dy >= 0) {
-          toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        } else if (dx < 0 && dy >= 0) {
-          toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        } else if (dx >= 0 && dy < 0) {
-          toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        } else { //if (dx < 0 &&dy < 0)
-          toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
-          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
-        }
+    for (Direction dir : piece.getCaptureDirections()) {
+      dx = Integer.toString(dir.xDist());
+      dy = Integer.toString(dir.yDist());
+      toReturn += "(<= (" + ctype + " ?x1 ?y1 ?x2 ?y2)\n";
+      if (dx >= 0 && dy >= 0) {
+        toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
+      } else if (dx < 0 && dy >= 0) {
+        toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
+      } else if (dx >= 0 && dy < 0) {
+        toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
+      } else { //if (dx < 0 &&dy < 0)
+        toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
+        toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
       }
     }
+
     return toReturn;
   }
 
