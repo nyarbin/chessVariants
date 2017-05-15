@@ -1,3 +1,0 @@
-./run_ggp_slave 6000 &
-./run_ggp_slave 6001 &
-./run_ggp_slave 6002 &

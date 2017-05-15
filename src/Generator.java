@@ -13,8 +13,8 @@ import com.google.gson.Gson;
 class Generator {
   private static final int NUM_ROUNDS = 1;    // # rounds for genetic algorithm
   private static final int CANDIDATES = 4;    // number of candidate boards
-  private static final int NUM_TRIALS = 2;    // number of games per round
-  private static final int NUM_SERVERS = 2;   // number of running servers
+  private static final int NUM_TRIALS = 1;    // number of games per round
+  private static final int NUM_SERVERS = 1;   // number of running servers
   private static final int BASE_PORT = 4000;  // base port number
   private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;
@@ -67,7 +67,7 @@ class Generator {
                                gameName, gameName, "60", "15",
                                "127.0.0.1", Integer.toString(port1), "cadia1",
                                "127.0.0.1", Integer.toString(port2), "cadia2");
-    ggpPb.directory(new File("/home/azhu8/Documents/DM425/ggp-base"));
+    ggpPb.directory(new File("../ggp-base"));
     File log = new File("ggp_" + gameName + "_" + Integer.toString(serverNum) + ".log");
     ggpPb.redirectErrorStream(true);
     ggpPb.redirectOutput(Redirect.appendTo(log));
@@ -84,7 +84,7 @@ class Generator {
     ProcessBuilder cadiaPb = new ProcessBuilder("./ggpserver",
                                                 "./cadiaplayer",
                                                 Integer.toString(port));
-    cadiaPb.directory(new File("/home/azhu8/Documents/DM425/cadiaplayer-3.0/bin"));
+    cadiaPb.directory(new File("../cadiaplayer-3.0/bin"));
     cadiaPb.environment().put("LD_LIBRARY_PATH", "/usr/local/lib");
     File log = new File("cadia" + Integer.toString(port) + ".log");
     cadiaPb.redirectErrorStream(true);
@@ -107,23 +107,23 @@ class Generator {
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
     /* Create GDL for each board */
-    PrintWriter gdl;
-    for (Board candidate : _candidates) {
+    /*PrintWriter gdl;
+    for (Board board : _candidates) {
       try {
-        gdl = new PrintWriter("ChessVariant_" + Integer.toString(candidate.ID()) + ".kif");
-        gdl.println(Description.gdlOutput(candidate));
+        gdl = new PrintWriter("chess" + Integer.toString(board.ID()) + ".kif");
+        gdl.println(Description.gdlOutput(board));
         gdl.flush();
         gdl.close();
       } catch (FileNotFoundException ex) {
         System.out.println(ex.getMessage());
       }
-    }
+    }*/
     /* Evaluate each board */
     List<Process> servers = new ArrayList<Process>();
     for (int b = 0; b < _candidates.size(); b++) {
       /* Run the game simulation NUM_TRIALS times */
-      //Generate gdl, put into file named chess<number>.kif in games/games/
-      String gameName = "ChessVariant_" + Integer.toString(_candidates.get(b).ID());
+      //String gameName = "chess" + Integer.toString(_candidates.get(b).ID());
+      String gameName = "ticTacToe224";
       int trial = 0;
       while (trial < NUM_TRIALS) {
         for (int s = 0; s < NUM_SERVERS; s++) {
@@ -140,7 +140,7 @@ class Generator {
         servers.clear();
       }
       /* Read json data created by the server */
-      File resultDir = new File("/home/azhu8/Documents/DM425/ggp-base/" + gameName);
+      File resultDir = new File("../ggp-base/" + gameName);
       File[] fileList = resultDir.listFiles();
       for (File file : fileList) {
         if (file.getName().contains("json")) {

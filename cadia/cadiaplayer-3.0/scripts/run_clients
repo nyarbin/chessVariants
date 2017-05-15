@@ -1,2 +1,0 @@
-./run_ggp_client 5000 &
-./run_ggp_client 5001 &
