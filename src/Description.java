@@ -31,15 +31,16 @@ public class Description {
     String mtype = "move_" + type;
     String ctype = "capture_" + type;
     String toReturn = "\n; " + type + " move definitions.\n";
-    //TODO edit move headers to account for whether there are intervening pieces
     //TODO check against speedchess.kif c 150-250
     toReturn += "(<= (okMove ?player (move " + type + " ?x1 ?y1 ?x2 ?y2))\n" +
       " (true (cell ?x1 ?y1 ?player " + type + "))\n" +
       " (" + mtype + " ?x1 ?y1 ?x2 ?y2)\n" +
+      " (clearBtwn ?x1 ?y1 ?x2 ?y2)\n" +
       " (not (occupied ?x2 ?y2)))\n";
     toReturn += "(<= (okMove ?player (move " + type + " ?x1 ?y1 ?x2 ?y2))\n" +
       " (true (cell ?x1 ?y1 ?player " + type + "))\n" +
       " (" + ctype + " ?x1 ?y1 ?x2 ?y2)\n" +
+      " (clearBtwn ?x1 ?y1 ?x2 ?y2)\n" +
       " (true (cell ?x2 ?y2 ?oplayer ?piece))\n" +
       " (true (opponent ?player ?oplayer)))\n";
 
@@ -52,21 +53,17 @@ public class Description {
         dy = Integer.toString(dir.yDist());
         toReturn += "(<= (" + mtype + " ?x1 ?y1 ?x2 ?y2)\n";
         if (dx >= 0 && dy >= 0) {
-          toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x1 ?y1 " + dx + " " + dy + "?x2 ?y2 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         } else if (dx < 0 && dy >= 0) {
-          toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x2 ?y1 " + dx + " " + dy + "?x1 ?y2 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         } else if (dx >= 0 && dy < 0) {
-          toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x1 ?y2 " + dx + " " + dy + "?x2 ?y1 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         } else { //if (dx < 0 &&dy < 0)
-          toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x2 ?y2 " + dx + " " + dy + "?x1 ?y1 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         }
       }
     }
@@ -79,21 +76,17 @@ public class Description {
         dy = Integer.toString(dir.yDist());
         toReturn += "(<= (" + ctype + " ?x1 ?y1 ?x2 ?y2)\n";
         if (dx >= 0 && dy >= 0) {
-          toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x1 ?y1 " + dx + " " + dy + "?x2 ?y2 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         } else if (dx < 0 && dy >= 0) {
-          toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x2 ?y1 " + dx + " " + dy + "?x1 ?y2 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         } else if (dx >= 0 && dy < 0) {
-          toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x1 ?y2 " + dx + " " + dy + "?x2 ?y1 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         } else { //if (dx < 0 &&dy < 0)
-          toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + ")\n";
-          toReturn += " (dist ?x2 ?y2 " + dx + " " + dy + "?x1 ?y1 ?d)\n";
-          toReturn += " (lt ?d " + Integer.toString(move.length()) + "))\n";
+          toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
+          toReturn += " (leq ?d " + Integer.toString(move.length()) + "))\n";
         }
       }
     }
@@ -131,9 +124,10 @@ public class Description {
     }
 
     //Less-than relation
-    toReturn += "\n; Less-than relation.\n";
-    toReturn += "(<= (lt ?x ?y) (succ ?x ?y))\n" +
-      "(<= (lt ?x ?z) (succ ?x ?y) (lt ?y ?z))\n";
+    toReturn += "\n; Less-than-or-equal relation.\n";
+    toReturn += "(<= (leq ?x ?x) (number ?x))\n" +
+      "(<= (leq ?x ?y) (succ ?x ?y))\n" +
+      "(<= (leq ?x ?z) (succ ?x ?y) (leq ?y ?z))\n";
 
     //Addition
     toReturn += "\n; Addition.\n";
@@ -144,31 +138,45 @@ public class Description {
     toReturn += "(<= (number ?y) (succ ?x ?y))\n";
 
     //Multiplication
-    // toReturn += "\n; Multiplication.\n";
-    // toReturn += "(<= (mul ?x 0 0)\n (number ?x))\n";
-    // toReturn += "(<= (mul ?x ?y ?z)\n" +
-    //   " (succ ?ym1 ?y)\n" +
-    //   " (mul ?x ?ym1 ?zmx)\n" +
-    //   " (add ?zmx ?x ?z))\n";
+    toReturn += "\n; Multiplication.\n";
+    toReturn += "(<= (mul ?x 0 0)\n (number ?x))\n";
+    toReturn += "(<= (mul ?x ?y ?z)\n" +
+      " (succ ?ym1 ?y)\n" +
+      " (mul ?x ?ym1 ?zmx)\n" +
+      " (add ?zmx ?x ?z))\n";
 
     //Direction vectors
     toReturn += "\n; Directions\n";
     toReturn += "(<= (dir ?x ?y) (number ?x) (number ?y))\n";
 
     //Define a function to test whether a ride is clear
-    toReturn += "\n; Test whether c squares from 1 in x,y are clear.\n" +
-      "; x1,y1 may be occupied.\n";
-    toReturn += "(<= (openUntil ?x1 ?y1 ?x ?y 1)\n" +
+    // toReturn += "\n; Test whether c squares from 1 in x,y are clear.\n" +
+    //   "; x1,y1 may be occupied.\n";
+    // toReturn += "(<= (openUntil ?x1 ?y1 ?x ?y 1)\n" +
+    //   " (add ?x1 ?x ?x2)\n" +
+    //   " (add ?y1 ?y ?y2)\n" +
+    //   " (not (occupied ?x2 ?y2)))\n";
+    // toReturn += "(<= (openUntil ?x1 ?y1 ?x ?y ?c)\n" +
+    //   " (succ ?c ?c2)\n" +
+    //   " (openUntil ?x2 ?y2 ?x ?y ?c2))\n";
+    toReturn += "(<= (clearBtwn ?x1 ?y1 ?x2 ?y2)\n" +
+      " (dir ?x1 ?y1 ?x2 ?y2 ?x ?y ?d)\n" +
       " (add ?x1 ?x ?x2)\n" +
-      " (add ?y1 ?y ?y2)\n" +
-      " (not (occupied ?x2 ?y2)))\n";
-    toReturn += "(<= (openUntil ?x1 ?y1 ?x ?y ?c)\n" +
-      " (succ ?c ?c2)\n" +
-      " (openUntil ?x2 ?y2 ?x ?y ?c2))\n";
+      " (add ?y1 ?y ?y2))\n";
+    toReturn += "(<= (clearBtwn ?x1 ?y1 ?x2 ?y2)\n" +
+      " (dir ?x1 ?y1 ?x2 ?y2 ?x ?y ?d)\n" +
+      " (add ?x1 ?x ?x3)\n" +
+      " (add ?y1 ?y ?y3)\n" +
+      " (clearBtwn (?x3 ?y3 ?x2 ?y2))\n";
 
-    //TODO define function to calc direction vector from x1,y1 to x2,y2
+    //Define function to calc direction vector from x1,y1 to x2,y2
+    toReturn += "\n; Determine whether x2,y2 lies d steps on x,y from x1,y1.\n";
+    toReturn += "(<= (dir ?x1 ?y1 ?x2 ?y2 ?x ?y ?d)\n" +
+      " (add ?x1 ?xtd ?x2)\n" +
+      " (add ?y1 ?ytd ?y2)\n" +
+      " (mul ?x ?d ?xtd)\n" +
+      " (mul ?y ?d ?ytd)\n";
 
-    //TODO define function to calc distance from x1,y1 along x,y
 
     return toReturn;
   }
