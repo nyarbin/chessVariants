@@ -60,12 +60,21 @@ public class Piece {
   }
   /** Calculates the cost of a piece by summing costs of individual moves */
   public int calcCost() {
-    this.cost = 0;
-    for (Move move : this.movements)
-      this.cost += move.getCost();
-    for (Move cap : this.captures)
-      this.cost += cap.getCost();
-    return this.cost;
+    /* 2, 4 (dist 1) full symm -> 8 travel, 8 protect
+       1, 2 (dist 2) full symm -> 16 travel, 8 protect
+       cost = squares to travel + squares to protect/attack
+       squares to travel double counted. squares to protect is fine
+       maybe don't worry: the solver will figure out that this is worthless?
+
+       Knight vs bishop -> take board size into account. Bishop has diag len 7,
+       but only max 4 (BOARD_SIZE/2) is really effective at one time
+       bishop has 16 move, 4 protect
+       knight has 8 move, 8 protect. So make move worth 1/2 and protect worth 1?
+
+       Currently very simplistic. Someday...
+    */
+    return this.getMoveDirections().size() / 2
+           + this.getCaptureDirections().size();
   }
   /** Change a piece's movements randomly */
   public void mutate(Random random) {

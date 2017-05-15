@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Collections;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
@@ -12,8 +13,8 @@ import com.google.gson.Gson;
 class Generator {
   private static final int NUM_ROUNDS = 1;    // # rounds for genetic algorithm
   private static final int CANDIDATES = 4;    // number of candidate boards
-  private static final int NUM_TRIALS = 1;    // number of games per round
-  private static final int NUM_SERVERS = 1;   // number of running servers
+  private static final int NUM_TRIALS = 2;    // number of games per round
+  private static final int NUM_SERVERS = 2;   // number of running servers
   private static final int BASE_PORT = 4000;  // base port number
   private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;
@@ -119,7 +120,7 @@ class Generator {
     }*/
     /* Evaluate each board */
     List<Process> servers = new ArrayList<Process>();
-    for (int b = 0; b < 1; b++) {   //TODO: change back to b < candidates.size()
+    for (int b = 0; b < _candidates.size(); b++) {
       /* Run the game simulation NUM_TRIALS times */
       //Generate gdl, put into file named chess<number>.kif in games/games/
       String gameName = "ticTacToe224";
@@ -149,15 +150,20 @@ class Generator {
             System.out.println(summary.matchId);
             System.out.println(summary.playClock);
             System.out.println(summary.moves.get(0).get(0));
+            _candidates.get(b).updateFitness(summary);
           } catch (FileNotFoundException ex) {
             System.out.println("File not found?!");   // shouldn't get here...
           }
         }
       }
     }
-
-    //do tourney selection
-    for (int i = 0; i < CANDIDATES; i++)   // for now, randomly pick survivors
-      _candidates.remove(_random.nextInt(_candidates.size()));
+    /* Tournament selection - random bracket, remove losers */
+    Collections.shuffle(_candidates);
+    for (int i = _candidates.size()-2; i >= 0; i -= 2) {
+      if (_candidates.get(i).getFitness() < _candidates.get(i+1).getFitness())
+        _candidates.remove(i);
+      else
+        _candidates.remove(i+1);
+    }
   }
 }

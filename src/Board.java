@@ -13,6 +13,9 @@ public class Board {
   private List<Piece> pieces;
   private int id;
   private static int next_id;
+
+  private int whiteWins;
+  private int blackWins;
   /** Randomly generates a board's pieces */
   public Board(Random random) {
     this.id = next_id++;
@@ -63,5 +66,19 @@ public class Board {
   public void printPieces() {
     for (Piece piece : this.pieces)
       System.out.println(piece);
+  }
+
+  public void updateFitness(GameSummary summary) {
+    if (summary.goalValues.get(0) > summary.goalValues.get(1))
+      this.whiteWins++;
+    else if (summary.goalValues.get(0) < summary.goalValues.get(1))
+      this.blackWins++;
+  }
+
+  public double getFitness() {
+    double numGames = this.whiteWins + this.blackWins;
+    if (numGames == 0)
+      return 0.0;
+    return -1.0 * Math.abs(this.whiteWins - this.blackWins) / numGames;
   }
 }
