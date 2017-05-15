@@ -2,6 +2,7 @@
 SRCFILES = \
 	Board.java \
 	Direction.java \
+	GameSummary.java \
 	Generator.java \
 	Move.java \
 	Piece.java \

@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import com.google.gson.Gson;
@@ -14,9 +16,11 @@ class Generator {
   private static final int BASE_PORT = 4000;  // base port number
   private static List<Board> _candidates;     // list of candidate boards
   private static Random _random;
+  private static Gson _gson;
   /** Runs genetic algorithm to pick chess variants */
   public static void main(String args[]) {
     _random = new Random();
+    _gson = new Gson();
     /* Initialize candidates */
     _candidates = new ArrayList<Board>();
     for (int i = 0; i < CANDIDATES; i++)
@@ -102,6 +106,7 @@ class Generator {
   private static void selection() {
     List<Process> servers = new ArrayList<Process>();
     for (int b = 0; b < 1; b++) {   //TODO: change back to b < candidates.size()
+      /* Run the game simulation NUM_TRIALS times */
       //Generate gdl, put into file named chess<number>.kif in games/games/
       String gameName = "ticTacToe224";
       int trial = 0;
@@ -119,13 +124,20 @@ class Generator {
         }
         servers.clear();
       }
+      /* Read json data created by the server */
       File resultDir = new File("/home/azhu8/Documents/DM425/ggp-base/" + gameName);
       File[] fileList = resultDir.listFiles();
       for (File file : fileList) {
-        String name = file.getName();
-        if (name.contains("json")) {
-          System.out.println(name);
-          // calc fitness!
+        if (file.getName().contains("json")) {
+          try {
+            FileReader reader = new FileReader(file);
+            GameSummary summary = _gson.fromJson(reader, GameSummary.class);
+            System.out.println(summary.matchId);
+            System.out.println(summary.playClock);
+            System.out.println(summary.moves.get(0).get(0));
+          } catch (FileNotFoundException ex) {
+            System.out.println("File not found?!");   // shouldn't get here...
+          }
         }
       }
     }
