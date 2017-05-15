@@ -7,7 +7,7 @@ public class Description {
   /** Construct the GDL to be printed. */
   public String gdlOutput(Board board) {
     ArrayList<Piece> pieces = board.armies();
-    String toReturn = headerInfo() + baseRules() + baseQueries() +
+    String toReturn = headerInfo(pieces) + baseRules() + baseQueries() +
       "piece_" + stateDynamics(Integer.toString(pieces.get(0).ID()));
     toReturn += endgame(pieces.get(0));
     toReturn += placePhase(board.start(), board.len(), board.width(),
@@ -27,7 +27,8 @@ public class Description {
       "(init (placed 0))\n";
     String pieceID;
     String cost;
-    for (Piece piece : armyList.subList(1, armyList.length)) {
+    toReturn += "\n; Piece costs.\n";
+    for (Piece piece : armyList.subList(1, armyList.size())) {
       pieceID = "piece_" + Integer.toString(piece.ID());
       cost = Integer.toString(piece.calcCost());
       toReturn += "(" + pieceID + " " + cost + ")\n";
@@ -84,7 +85,7 @@ public class Description {
   }
 
   /** Placement phase logic. */
-  private string placePhase(int startRanks, int ranks, int files, int maxScore,
+  private String placePhase(int startRanks, int ranks, int files, int maxScore,
       ArrayList<Piece> armies) {
     String toReturn = "\n; How pieces get placed on the board.\n";
     toReturn += "(<= (okPlace ?player (place ?type ?x ?y))\n" +
@@ -178,20 +179,24 @@ public class Description {
     //Generate the moves.
     String dx;
     String dy;
+    int xdim;
+    int ydim;
     for (Direction dir : piece.getMoveDirections()) {
-      dx = Integer.toString(dir.xDist());
-      dy = Integer.toString(dir.yDist());
+      xdim = dir.xDist();
+      ydim = dir.yDist();
+      dx = Integer.toString(xdim);
+      dy = Integer.toString(ydim);
       toReturn += "(<= (" + mtype + " ?x1 ?y1 ?x2 ?y2)\n";
-      if (dx >= 0 && dy >= 0) {
+      if (xdim >= 0 && ydim >= 0) {
         toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
-      } else if (dx < 0 && dy >= 0) {
+      } else if (xdim < 0 && ydim >= 0) {
         toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
-      } else if (dx >= 0 && dy < 0) {
+      } else if (xdim >= 0 && ydim < 0) {
         toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
-      } else { //if (dx < 0 &&dy < 0)
+      } else { //if (xdim < 0 && ydim < 0)
         toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
       }
@@ -199,19 +204,21 @@ public class Description {
 
     //Generate captures.
     for (Direction dir : piece.getCaptureDirections()) {
-      dx = Integer.toString(dir.xDist());
-      dy = Integer.toString(dir.yDist());
+      xdim = dir.xDist();
+      ydim = dir.yDist();
+      dx = Integer.toString(xdim);
+      dy = Integer.toString(ydim);
       toReturn += "(<= (" + ctype + " ?x1 ?y1 ?x2 ?y2)\n";
-      if (dx >= 0 && dy >= 0) {
+      if (xdim >= 0 && ydim >= 0) {
         toReturn += " (dir ?x1 ?y1 ?x2 ?y2 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
-      } else if (dx < 0 && dy >= 0) {
+      } else if (xdim < 0 && ydim >= 0) {
         toReturn += " (dir ?x2 ?y1 ?x1 ?y2 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
-      } else if (dx >= 0 && dy < 0) {
+      } else if (xdim >= 0 && ydim < 0) {
         toReturn += " (dir ?x1 ?y2 ?x2 ?y1 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
-      } else { //if (dx < 0 &&dy < 0)
+      } else { //if (xdim < 0 && ydim < 0)
         toReturn += " (dir ?x2 ?y2 ?x1 ?y1 " + dx + " " + dy + " ?d)\n";
         toReturn += " (leq ?d " + Integer.toString(dir.length()) + "))\n";
       }
