@@ -30,6 +30,23 @@ public class Board {
     for (Piece piece : copyTarget.pieces)
       this.pieces.add(new Piece(piece));
   }
+
+  public int len() {
+    return BOARD_SIZE;
+  }
+
+  public int width() {
+    return BOARD_SIZE;
+  }
+
+  public int maxScore() {
+    return MAX_SCORE;
+  }
+
+  /** The number of rows players have to place pieces on. */
+  public int start() {
+    return PLACEMENT_ROWS;
+  }
   /** Constructor for recombination of two boards */
   public Board(Random random, Board parent1, Board parent2) {
     this.id = next_id++;
