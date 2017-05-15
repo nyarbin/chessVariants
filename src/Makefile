@@ -6,7 +6,8 @@ SRCFILES = \
 	Generator.java \
 	Move.java \
 	Piece.java \
-	Symmetry.java
+	Symmetry.java \
+	Description.java
 
 JC = javac
 JVM = java
