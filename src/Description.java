@@ -9,6 +9,7 @@ public class Description {
     ArrayList<Piece> pieces = board.armies();
     String toReturn = headerInfo() + initialization() + baseRules() + base();
     toReturn += stateDynamics();
+    toReturn += endgame(pieces.get(0));
     toReturn += placePhase(board.start(), board.len(), board.width(), pieces);
     for (Piece piece : pieces) {
       toReturn += pieceMovement(piece);
@@ -21,12 +22,41 @@ public class Description {
   /** Basic info for GDL */
   private String headerInfo() {
     return "(role white)\n(role black)\n(init (control white))\n" +
-      "(init (phase placing)\n";
+      "(init (phase placing))\n";
   }
 
   /** GDL sentences describing initial board state */
   private String initialization() {
     return "";
+  }
+
+  private String endgame(Piece king) {
+    String toReturn = "\n; Ending the game.\n";
+    // Endgame conditions.
+    toReturn += "(<= (hasKing ?player)\n ((true ?cell ?x ?y ?player piece_" +
+      Integer.toString(king.ID()) + ")))\n";
+    //toReturn += "(<= terminal (role ?player)\n (not (hasKing ?player)))\n";
+    toReturn += "(<= terminal (true (step 501)))\n";
+    toReturn += "(<= terminal (true (control ?player))\n" +
+     " (not (hasMove ?player)))\n";
+    toReturn += "(<= (hasMove ?player)\n (okMove ?player ?move)\n" +
+     " (hasKing ?player))\n";
+    // Goals
+    toReturn += "(<= (goal white 100)\n (hasMove white)\n" +
+     " (not (hasMove black)))\n";
+    toReturn += "(<= (goal black 100)\n (hasMove black)\n" +
+     " (not (hasMove white)))\n";
+    toReturn += "(<= (goal black 0)\n (hasMove white)\n" +
+     " (not (hasMove black)))\n";
+    toReturn += "(<= (goal white 0)\n (hasMove black)\n" +
+     " (not (hasMove white)))\n";
+    toReturn += "(<= (goal white 50)\n (hasMove white)\n (hasMove black))\n";
+    toReturn += "(<= (goal black 50)\n (hasMove white)\n (hasMove black))\n";
+    toReturn += "(<= (goal black 50)\n (not(hasMove white))\n" +
+     " (not (hasMove black)))\n";
+    toReturn += "(<= (goal white 50)\n (not(hasMove white))\n" +
+     " (not (hasMove black)))\n";
+    return toReturn;
   }
 
   /** The two basic move rules: noop off-turn; move on-turn. */

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import com.google.gson.Gson;
 /** Main generator class for chess variants */
@@ -104,6 +105,19 @@ class Generator {
   }
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
+    /* Create GDL for each board */
+    /*PrintWriter gdl;
+    for (Board candidate : _candidates) {
+      try {
+        gdl = new PrintWriter(Integer.toString(candidate.ID()) + ".kif");
+        //gdl.println(Description.gdlOutput(candidate));
+        gdl.flush();
+        gdl.close();
+      } catch (FileNotFoundException ex) {
+        System.out.println(ex.getMessage());
+      }
+    }*/
+    /* Evaluate each board */
     List<Process> servers = new ArrayList<Process>();
     for (int b = 0; b < 1; b++) {   //TODO: change back to b < candidates.size()
       /* Run the game simulation NUM_TRIALS times */
