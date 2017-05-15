@@ -44,25 +44,61 @@ class Generator {
   private static void recombine(Board board1, Board board2) {
     _candidates.add(new Board(_random, board1, board2));
   }
-  /** Selects survivors after evaluation using CadiaPlayer */
-  private static void selection() {
-    ProcessBuilder cadiaPb = new ProcessBuilder("/bin/bash", "test.sh", "3000");
-    cadiaPb.directory(new File("/home/azhu8/Documents/DM425/chessVariants/hello"));
-    File log = new File("log");
+  /** Creates a process that runs the GGP server */
+  private static void startupGgpServer() {
+    ProcessBuilder ggpPb = new ProcessBuilder("/bin/bash",
+                                              "gameServerRunner.sh",
+                                              "results", "ticTacToe223",
+                                              "30", "15",
+                                              "127.0.0.1", "4047", "cadia1",
+                                              "127.0.0.1", "4048", "cadia2");
+    ggpPb.directory(new File("/home/azhu8/Documents/DM425/ggp-base"));
+    File log = new File("ggp.log");
+    ggpPb.redirectErrorStream(true);
+    ggpPb.redirectOutput(Redirect.appendTo(log));
+    try {
+      Process p = ggpPb.start();
+      p.waitFor();
+    } catch (IOException ex) {
+      System.out.println(ex.getMessage());
+    } catch (InterruptedException ex) {
+      System.out.println(ex.getMessage());
+    }
+  }
+  /** Creates a process that runs a CadiaPlayer */
+  private static Process startupCadiaPlayer(int port) {
+    ProcessBuilder cadiaPb = new ProcessBuilder("./ggpserver",
+                                                "./cadiaplayer",
+                                                Integer.toString(port));
+    cadiaPb.directory(new File("/home/azhu8/Documents/DM425/cadiaplayer-3.0/bin"));
+    cadiaPb.environment().put("LD_LIBRARY_PATH", "/usr/local/lib");
+    File log = new File("cadia" + Integer.toString(port) + ".log");
     cadiaPb.redirectErrorStream(true);
     cadiaPb.redirectOutput(Redirect.appendTo(log));
     try {
-      Process p = cadiaPb.start();
-      if (cadiaPb.redirectInput() != Redirect.PIPE)
-        System.out.println("NOOO");
-      if (cadiaPb.redirectOutput().file() != log)
-        System.out.println("NO2");
-      if (p.getInputStream().read() != -1)
-        System.out.println("NO3");
+      return cadiaPb.start();
     } catch (IOException ex) {
-      System.out.println("EXCEPTION" + ex.getMessage());
+      System.out.println(ex.getMessage());
     }
-    //run cadiaplayer on each candidate
+    return null;
+  }
+  /** Kill all instances of CadiaPlayer (left behind after .destroy()) */
+  private static void killCadiaPlayer() {
+    ProcessBuilder pb = new ProcessBuilder("/bin/bash", "killcadia.sh");
+    try {
+      pb.start();
+    } catch (IOException ex) {
+      System.out.println(ex.getMessage());
+    }
+  }
+  /** Selects survivors after evaluation using CadiaPlayer */
+  private static void selection() {
+    Process p1 = Generator.startupCadiaPlayer(4047);
+    Process p2 = Generator.startupCadiaPlayer(4048);
+    Generator.startupGgpServer();
+    p1.destroy();
+    p2.destroy();
+    killCadiaPlayer();
     //get fitness values
     //do tourney selection
     for (int i = 0; i < CANDIDATES; i++)   // for now, randomly pick survivors
