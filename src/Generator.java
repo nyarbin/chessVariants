@@ -22,6 +22,12 @@ class Generator {
       Generator.generation();
       Generator.selection();
     }
+    PrintWriter gdl;
+    for (candidate : candidates) {
+      gdl = new PrintWriter(candidate.id + ".kif");
+      gdl.println(Description.gdlOutput(candidate));
+      gld.close();
+    }
     _candidates.get(0).printPieces();
   }
   /** Generates new pieces using genetic mutation and recombination */
