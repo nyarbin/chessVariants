@@ -6,6 +6,8 @@ Run using
 javac -cp ".:gson-2.8.0.jar" *.java
 java -cp ".:gson-2.8.0.jar" Generator
 
+Requires gson-2.8.0 java library.
+
 TODOS:
 
 getCost() -> move from Move to Piece?
