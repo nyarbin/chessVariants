@@ -11,6 +11,8 @@ TODOS:
 getCost() -> move from Move to Piece?
 Hookup to cadiaplayer
 
+Fix directories in Generator -> don't use your own, use relative!
+
 - Finish handling placement phase in GDL.
 - Go over state change logic.
 - Get king, endgame stuff into GDL.
