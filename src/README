@@ -1,10 +1,16 @@
 Generator README
 
-Generator uses genetic algorithm hopefully!
+Generator uses genetic algorithms!
 
-Run using
-javac -cp ".:gson-2.8.0.jar" *.java
-java -cp ".:gson-2.8.0.jar" Generator
+Run using:
+make
+make run
+
+The code will create random sets of chess pieces. After converting the piece
+movement logic to GDL, the program starts up GGP servers and CadiaPlayers
+to play the actual games, placing pieces on the board before starting. We
+use the outcomes of the games to determine fitness, and use genetic algorithms
+to pick which sets of pieces to keep for the next round.
 
 TODOS:
 
