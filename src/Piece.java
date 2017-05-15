@@ -31,6 +31,34 @@ public class Piece {
       this.captures.add(new Move(cap));
     this.calcCost();
   }
+  /** Get set of all movements given a list of moves */
+  public static List<Direction> getDirections(List<Move> moveList) {
+    List<Direction> dirList = new ArrayList<Direction>();
+    for (Move cap : moveList)
+      dirList.addAll(cap.getDirections());
+    /* Remove duplicate movements */
+    List<Integer> dupList = new ArrayList<Integer>();   // duplicate indices
+    for (int i = 0; i < dirList.size(); i++) {
+      Direction firstDirCopy = dirList.get(i);
+      for (int j = i+1; j < dirList.size(); j++) {
+        if (dirList.get(j).equals(firstDirCopy))
+          dupList.add(new Integer(j));
+      }
+      for (int k = dupList.size() - 1; k >= 0; k--)     // remove duplicates
+        dirList.remove(dupList.get(k).intValue());
+      dupList.clear();
+    }
+    return dirList;
+  }
+
+  public List<Direction> getMoveDirections() {
+    return Piece.getDirections(this.movements);
+  }
+
+  public List<Direction> getCaptureDirections() {
+    return Piece.getDirections(this.captures);
+  }
+
   /** Calculates the cost of a piece by summing costs of individual moves */
   public int calcCost() {
     this.cost = 0;

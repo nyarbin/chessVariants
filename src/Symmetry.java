@@ -21,16 +21,16 @@ public class Symmetry {
     this.forward = copyTarget.forward;
   }
 
-  public Direction forwSymm(Direction origDir) {
-    return new Direction(origDir.xDist(), -1 * origDir.yDist());
+  public Direction forwSymm(Direction dir) {
+    return new Direction(dir.xDist(), -1 * dir.yDist(), dir.length());
   }
 
-  public Direction sideSymm(Direction origDir) {
-    return new Direction(-1 * origDir.xDist(), origDir.yDist());
+  public Direction sideSymm(Direction dir) {
+    return new Direction(-1 * dir.xDist(), dir.yDist(), dir.length());
   }
 
-  public Direction diagSymm(Direction origDir) {
-    return new Direction(origDir.yDist(), origDir.xDist());
+  public Direction diagSymm(Direction dir) {
+    return new Direction(dir.yDist(), dir.xDist(), dir.length());
   }
 
   public List<Direction> getDirections(Direction dir) {

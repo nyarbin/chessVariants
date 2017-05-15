@@ -1,30 +1,23 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-/** A movement, defined by a direction vector, symmetries, and a distance */
+/** A movement, defined by a direction vector and symmetries */
 public class Move {
   private Direction baseDir;
   private Symmetry symmetry;
-  private int distance;
   /** Constuctor to randomly generate a move */
   public Move(Random random) {
     this.symmetry = new Symmetry(random);
     this.baseDir = new Direction(random);
-    this.setDistance(random);
   }
   /** Copy constructor */
   public Move(Move copyTarget) {
     this.symmetry = new Symmetry(copyTarget.symmetry);
     this.baseDir = new Direction(copyTarget.baseDir);
-    this.distance = copyTarget.distance;
   }
 
   public List<Direction> getDirections() {
     return this.symmetry.getDirections(this.baseDir);
-  }
-
-  public int length() {
-    return this.distance;
   }
 
   public int getCost() {
@@ -41,27 +34,18 @@ public class Move {
     */
     return 0;
   }
-  /** Generates a random distance based on baseDir vector */
-  public void setDistance(Random random) {
-    int dirMax = Math.max(Math.abs(this.baseDir.xDist()),
-                          Math.abs(this.baseDir.yDist()));
-    this.distance = random.nextInt((Board.BOARD_SIZE-1)/dirMax) + 1;
-  }
 
   public void mutate(Random random) {
-    if (random.nextInt(4) == 0) {
+    if (random.nextInt(4) == 0)
       this.baseDir = new Direction(random);
-      this.setDistance(random);
-    } else if (random.nextInt(2) == 0) {
+    else if (random.nextInt(2) == 0)
       this.symmetry = new Symmetry(random);
-    }
   }
 
   @Override
   public String toString() {
     String str = "Direction: " + this.baseDir.toString() + " Symmetries: ";
     str += this.symmetry.toString();
-    str += " Distance: " + Integer.toString(this.distance);
     return str;
   }
 }
