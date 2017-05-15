@@ -5,7 +5,7 @@ import java.util.List;
 public class Description {
 
   /** Construct the GDL to be printed. */
-  public String gdlOutput(Board board) {
+  public static String gdlOutput(Board board) {
     ArrayList<Piece> pieces = board.armies();
     String toReturn = headerInfo(pieces) + baseRules() + baseQueries() +
       "piece_" + stateDynamics(Integer.toString(pieces.get(0).ID()));
@@ -21,7 +21,7 @@ public class Description {
   }
 
   /** Basic info for GDL */
-  private String headerInfo(ArrayList<Piece> armyList) {
+  private static String headerInfo(ArrayList<Piece> armyList) {
     String toReturn  = "(role white)\n(role black)\n(init (control white))\n" +
       "(init (phase placing))\n(init (white 0))\n(init (black 0))\n" +
       "(init (placed 0))\n";
@@ -36,7 +36,7 @@ public class Description {
     return toReturn;
   }
 
-  private String endgame(Piece king) {
+  private static String endgame(Piece king) {
     String toReturn = "\n; Ending the game.\n";
     // Endgame conditions.
     toReturn += "(<= (hasKing ?player)\n ((true ?cell ?x ?y ?player piece_" +
@@ -66,7 +66,7 @@ public class Description {
   }
 
   /** The two basic move rules: noop off-turn; move on-turn. */
-  private String baseRules() {
+  private static String baseRules() {
     String toReturn = "\n; The fundamental rules.\n";
     toReturn += "(<= (legal ?player noop)\n (role ?player)\n" +
       " (not (true (control ?player))) (true (phase playing)))\n";
@@ -80,12 +80,12 @@ public class Description {
   }
 
   /** Base/input clauses */
-  private String baseQueries() {
+  private static String baseQueries() {
     return "";
   }
 
   /** Placement phase logic. */
-  private String placePhase(int startRanks, int ranks, int files, int maxScore,
+  private static String placePhase(int startRanks, int ranks, int files, int maxScore,
       ArrayList<Piece> armies) {
     String toReturn = "\n; How pieces get placed on the board.\n";
     toReturn += "(<= (okPlace ?player (place ?type ?x ?y))\n" +
@@ -117,7 +117,7 @@ public class Description {
   }
 
   /** State change logic */
-  private String stateDynamics(String kingID) {
+  private static String stateDynamics(String kingID) {
     String toReturn = "\n; Basic state change logic.\n";
     toReturn += "(<= (next (control ?opponent))\n (true (control ?player))\n" +
       " (opponent ?player ?opponent) (true (phase playing)))\n";
@@ -155,7 +155,7 @@ public class Description {
   }
 
   /** GDL sentences describing how a given piece moves */
-  private String pieceMovement(Piece piece) {
+  private static String pieceMovement(Piece piece) {
     // Top matter for a piece's moves.
     String type = "piece_" + Integer.toString(piece.ID());
     String mtype = "move_" + type;
@@ -228,7 +228,7 @@ public class Description {
   }
 
   /** GDL definitions for fundamental game constants. */
-  private String constants(int files, int ranks) {
+  private static String constants(int files, int ranks) {
     String toReturn = "\n; Simple constants.\n";
 
     toReturn += "(opponent white black)\n(opponent black white)\n";
@@ -241,9 +241,9 @@ public class Description {
     }
     return toReturn;
   }
-  
+
   /** GDL for arithmetic and board geometry */
-  private String math() {
+  private static String math() {
     String toReturn = "\n; Fundamental chess math.\n";
     //Define the first 500 numbers into existence
     toReturn += "\n; Simple successor function.\n";

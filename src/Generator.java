@@ -110,7 +110,7 @@ class Generator {
     PrintWriter gdl;
     for (Board candidate : _candidates) {
       try {
-        gdl = new PrintWriter(Integer.toString("ChessVariant_" + candidate.ID()) + ".kif");
+        gdl = new PrintWriter("ChessVariant_" + Integer.toString(candidate.ID()) + ".kif");
         gdl.println(Description.gdlOutput(candidate));
         gdl.flush();
         gdl.close();
@@ -123,7 +123,7 @@ class Generator {
     for (int b = 0; b < _candidates.size(); b++) {
       /* Run the game simulation NUM_TRIALS times */
       //Generate gdl, put into file named chess<number>.kif in games/games/
-      String gameName = "ticTacToe224";
+      String gameName = "ChessVariant_" + Integer.toString(_candidates.get(b).ID());
       int trial = 0;
       while (trial < NUM_TRIALS) {
         for (int s = 0; s < NUM_SERVERS; s++) {
