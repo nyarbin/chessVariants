@@ -107,23 +107,24 @@ class Generator {
   /** Selects survivors after evaluation using CadiaPlayer */
   private static void selection() {
     /* Create GDL for each board */
-    /*PrintWriter gdl;
+    PrintWriter gdl;
     for (Board board : _candidates) {
       try {
-        gdl = new PrintWriter("chess" + Integer.toString(board.ID()) + ".kif");
+        gdl = new PrintWriter("../ggp-base/games/games/chess"
+                              + Integer.toString(board.ID()) + ".kif");
         gdl.println(Description.gdlOutput(board));
         gdl.flush();
         gdl.close();
       } catch (FileNotFoundException ex) {
         System.out.println(ex.getMessage());
       }
-    }*/
+    }
     /* Evaluate each board */
     List<Process> servers = new ArrayList<Process>();
     for (int b = 0; b < _candidates.size(); b++) {
       /* Run the game simulation NUM_TRIALS times */
-      //String gameName = "chess" + Integer.toString(_candidates.get(b).ID());
-      String gameName = "ticTacToe224";
+      String gameName = "chess" + Integer.toString(_candidates.get(b).ID());
+      //String gameName = "ticTacToe224";
       int trial = 0;
       while (trial < NUM_TRIALS) {
         for (int s = 0; s < NUM_SERVERS; s++) {

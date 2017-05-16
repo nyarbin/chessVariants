@@ -9,18 +9,13 @@
 \usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{tikz}
-\usepackage{biblatex}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
-
-\addbibresource{paper.bib}
 
 \title{TITLE HERE}
 
 \author{Ben Reis \\
-  Johns Hopkins University\\
-  3501 Saint Paul St.\\
-  Baltimore, MD 21218, USA\\
-  {\tt breis3@jhu.edu}
+  ADDRESS \\
+  {\tt email}
   \And
   Andrew Zhu \\
   Johns Hopkins University \\
@@ -33,30 +28,67 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-General Game Playing (GGP) programs can learn to play any game it is given a description for. In our project, we aim to use these programs to help generate fun and balanced variants of chess. Our system generates a description using Game Description Language (GDL), and based on gameplay between two GGP players,  
+General Game Playing (GGP) programs can learn to play any game it is given a description for. In our project, we aim to use these programs to help generate fun and balanced variants of chess. Our system generates descriptions of these variants using the Game Description Language (GDL). By analyzing gameplay results between pairs of GGP players, and by using genetic algorithms to build variants stochastically, our system is able to traverse the search space of chess variants to find one that is hopefully enjoyable.
 \end{abstract}
 
 \section{Introduction}
-%Intro here - what's the problem?
-
-\section{Encoding Chess-Like Games}
-% talk about GDL, METAGAME, automated game design
-
-\section{Introduction}
 
 
 \section{Encoding Chess-Like Games}
+%define a ride!
+%define symmetries from metagame
 
 \section{Search Algorithms}
+Genetic algorithms seemed like a good fit with the simulation based strategy that we picked: both genetic algorithms and the simulations involve randomness in their execution. Because our chess variants have different movements rules for individual pieces, we created an encoding of these movement rules. This encoding is then stochastically mutated and recombined with other encodings during the iterations of the algorithm.
+
+We encode each chess variant to be a set of pieces. Because the game players are responsible for actually placing the pieces on the board (see the Implementation section), our encoding only deals with the movement rules of those pieces. Each piece in a variant has a list of movement rules (squares a piece can move into if not capturing a piece) and a list of capture rules (squares a piece can move into if capturing an enemy piece). Each of these rules consists of a direction vector, a ride length, and a list of symmetries that the rule is subject to.
+
+Here are some ways that regular chess pieces would be encoded:\\
+\begin{center}
+Knight (Figure 1)
+\end{center}
+\begin{figure}
+\centering
+\includegraphics[width=6cm]{knight.jpg}
+\caption{Knight Movement}
+\label{fig:boat1}
+\end{figure}
+Movement Rules:
+\begin{enumerate}
+\item direction:(1,2),\\
+rideLength:1,\\
+symmetries:[SIDE, FORWARD, DIAGONAL]
+\end{enumerate}
+Capture Rules:
+\begin{enumerate}
+\item direction:(1,2),\\
+rideLength:1,\\
+symmetries:[SIDE, FORWARD, DIAGONAL]
+\end{enumerate}
+
+\begin{center}
+Queen
+\end{center}
+Movement Rules:
+\begin{enumerate}
+\item direction:(1,0),\\
+rideLength:7,\\
+symmetries:[SIDE, DIAGONAL]
+\end{enumerate}
+Capture Rules:
+\begin{enumerate}
+\item direction:(1,1),\\
+rideLength:7,\\
+symmetries:[SIDE, DIAGONAL]
+\end{enumerate}
+
+Recall that diagonal symmetry is symmetry over the $y=x$ axis. This allows the knight movement rule to be encoded simply as one move with all 3 kinds of symmetry. Also recall that a ride is defined as consective movements where no intervening square is occupied, except for perhaps the last square on a capture move. The queen can traverse the entire board if not blocked, so she has a ride length of 7 to represent 7 consecutive movements in the direction (1,0) or (1,1). Both of the examples here have the same rules for capture and movement. A pawn would have two different rules in order to encode that a pawn can move forward if not blocked by another piece, and can only capture diagonally. Every piece in our encodings has side symmetry (across the $y$ axis) for aesthetic reasons.
+
+When running the algorithm, there are $N$ surviving variants after a round of selection. During the generation phase, we generate an additional $N$ candidate variants for the next round using mutation and recombination. A candidate is mutated by adding new pieces to its set of pieces, by deleting pieces, or by changing the movement rules of its existing pieces. Two candidates are recombined into a new candidate by picking randomly among the two parents' pieces to create a new set of pieces. The original $N$ variants also remain in the pool of survivors, unchanged.
+
+After the generation phase comes the selection phase, where candidates are evaluated using the GGP players, and then some candidates are thrown out before the next generation phase. In keeping with the spirit of games, we decided to use tournament selection to select $N$ survivors from the $2N$ candidates. A fitness score is calculated for each candidate based on the results from the GGP players, and then candidates are randomly paired with each other. The candidate with the higher fitness score in each pair is selected to survive. Note that in this scheme, the candidate with the best fitness score will always survive, and candidates with higher scores are more likely to survive, but not guaranteed.
 
 \section{Implementation}
-% Decided to have players place pieces to simplify game generation.
-\subsection{Generating Pieces}
-% talk about balance decisions
-
-\subsection{Encoding the Game}
-% talk about encoding decisions in GDL
-% cite speedchess; alloyGGP
 
 \section{Results}
 
@@ -68,35 +100,31 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 
 \section{Conclusion}
 
-\section{Future Work}
-% talk about refinements; ways to test things.
 
-\printbibliography
 
-% \begin{thebibliography}{}
-% 
-% \bibitem[\protect\citename{Srivastava et al.}2014]{Srivastava:14}
-% Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov.
-% \newblock 2014.
-% \newblock Dropout: A Simple Way to Prevent Neural Networks from Overfitting. {\em Journal of Machine Learning Research},15(2014):1929-1958.
-% 
-% \bibitem[\protect\citename{Nielson}2015]{Nielson:15}
-% Michael Nielson.
-% \newblock 2015.
-% \newblock Neural Networks and Deep Learning. {\em Determination Press}.
-% \newblock http://neuralnetworksanddeeplearning.com
-% 
-% \bibitem[\protect\citename{RGU}]{RGU}
-% Robert Gordon University.
-% \newblock The Backpropagation Algorithm.
-% \newblock https://www4.rgu.ac.uk/files/chapter3\%20-\%20bp.pdf
-% 
-% \bibitem[\protect\citename{Repo}2013]{Repo:13}
-% M. Lichman.
-% \newblock UCI Machine Learning Repository.
-% \newblock University of California, School of Information and Computer Science.
-% \newblock https://archive.ics.uci.edu/ml
-% \end{thebibliography}
+\begin{thebibliography}{}
 
+\bibitem[\protect\citename{Srivastava et al.}2014]{Srivastava:14}
+Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov.
+\newblock 2014.
+\newblock Dropout: A Simple Way to Prevent Neural Networks from Overfitting. {\em Journal of Machine Learning Research},15(2014):1929-1958.
+
+\bibitem[\protect\citename{Nielson}2015]{Nielson:15}
+Michael Nielson.
+\newblock 2015.
+\newblock Neural Networks and Deep Learning. {\em Determination Press}.
+\newblock http://neuralnetworksanddeeplearning.com
+
+\bibitem[\protect\citename{RGU}]{RGU}
+Robert Gordon University.
+\newblock The Backpropagation Algorithm.
+\newblock https://www4.rgu.ac.uk/files/chapter3\%20-\%20bp.pdf
+
+\bibitem[\protect\citename{Repo}2013]{Repo:13}
+M. Lichman.
+\newblock UCI Machine Learning Repository.
+\newblock University of California, School of Information and Computer Science.
+\newblock https://archive.ics.uci.edu/ml
+\end{thebibliography}
 
 \end{document}
