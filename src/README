@@ -12,7 +12,10 @@ to play the actual games, placing pieces on the board before starting. We
 use the outcomes of the games to determine fitness, and use genetic algorithms
 to pick which sets of pieces to keep for the next round.
 
-Requires gson-2.8.0 java library.
+Requires:
+gson-2.8.0
+cadiaplayer-3.0 (player used for evaluating games)
+ggp-base (master used to run games)
 
 TODOS:
 
