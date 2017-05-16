@@ -1,0 +1,7 @@
+{
+  "gameName": "Chess",  
+  "rulesheet": "chess.kif",
+  "stylesheet": "chess.xsl",
+  "description": "chess.txt",
+  "user_interface": "chess.js"
+}
