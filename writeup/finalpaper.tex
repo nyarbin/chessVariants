@@ -66,8 +66,8 @@ use it as well.
 As discussed in \cite{agd1}, Pell \cite{metagame} did a great deal of work to
 define "chess-like" games formally, in his Metagame workbench for general game
 players. While we did not use the specification language he defined, his
-terminology and mathematical work was quite useful. The key terms used here are
-described below.
+terminology and mathematical groundwork was quite useful. The key terms used
+here are described below.
 
 \begin{description}
    \item [Direction Vector] A direction vector \(\langle x,y \rangle\) is simply
@@ -161,9 +161,9 @@ the \(32\) pieces that may be on the board and the \(64\) cells that make it up.
 
 The work of Alex Landau in writing a slightly trimmed-down version of chess, as
 well as his more general work in GDL was invaluable for the code generation
-process. The fundamental arithmetic clauses we use are his directly, and many
-other elements of our code is based on his Speedchess \cite{spdchess}
-implementation of the game.
+process. The fundamental arithmetic clauses we use are his directly
+\cite{gdlmath}, and many other elements of our code is based on his Speedchess
+\cite{spdchess} implementation of the game.
 
 Other than a few counters and a phase marker, game state is tracked entirely by
 which squares contain pieces. Other cells are essentially "brought into
@@ -213,5 +213,7 @@ We also extensively tested the genetic algorithm's generation phase, making sure
 It would also be nice to figure out what makes a chess variant easier to learn for the CadiaPlayer. That would involve deeper analysis of the game states and analysis of the CadiaPlayer's internal states to figure out how the CadiaPlayer responds to changes between variants.
 
 We have implemented the framework to achieve our goal of generating variants. Our encoding allows us to easily generate new variants to test. This separates the problems of figuring out what variants are interesting to test, and figuring out how to test a variant. We were unable to finish translation of encoding into game description, but once this part is plugged in, we should be able to test the variants that we have generated.
+
+\printbibliography
 
 \end{document}
