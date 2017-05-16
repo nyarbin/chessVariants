@@ -14,8 +14,10 @@
 \title{TITLE HERE}
 
 \author{Ben Reis \\
-  ADDRESS \\
-  {\tt email}
+  Johns Hopkins University\\
+  3501 Saint Paul st.\\
+  Baltimore, MD 21218, USA\\
+  {\tt breis3@jhu.edu}
   \And
   Andrew Zhu \\
   Johns Hopkins University \\
@@ -154,7 +156,35 @@ Fitness values are calculated based on statistics collected by the GGP players. 
 Encoding chess in GDL presents a number of problems due to the complexity of the
 game's state, which involves a great deal of information on which pieces have
 moved at all (for pawn moves and castling) and which pieces might move to
-certain places (for check and related concepts). All of this is in addition to 
+certain places (for check and related concepts). All of this is in addition to
+the \(32\) pieces that may be on the board and the \(64\) cells that make it up.
+
+The work of Alex Landau in writing a slightly trimmed-down version of chess, as
+well as his more general work in GDL was invaluable for the code generation
+process. The fundamental arithmetic clauses we use are his directly, and many
+other elements of our code is based on his Speedchess \cite{spdchess}
+implementation of the game.
+
+Other than a few counters and a phase marker, game state is tracked entirely by
+which squares contain pieces. Other cells are essentially "brought into
+existence" as they are needed. This greatly reduces the ammount of state that
+players and the game master need to handle, but increases the size of the rules,
+as capture and non-capture moves must be handled separately.
+
+To reduce the number of games which need to be evaluated, we have players place
+pieces themselves, purchasing them from a list that defines the game being
+played. In an extra phase before the game begins, players simultaneously place
+one piece each, as they choose, anywhere on a number of ranks associated with
+the variant they are playing. Each must place exactly one king, and the king
+must be placed last. There are no pawns unless the piece generation algorithm
+produces them. Once both players have placed their king, the game begins.
+
+To simplify both the GDL code generation process and the resulting output, we
+have chosen to omit moves whose legality depends on facts other than the current
+state of the board. We also ignore the notion of check; players are instead
+required to capture the enemy king. Since GDL requires that games be finite in
+length, we force a draw after a number of moves, as is common in implementations
+of boardgames which can draw.
 
 \subsection{Running the players}
 We used the GGP server from GGP.org to host our games. This server sends data over a network using HTTP requests to communicate with the players. Our GGP Player was the award winning CadiaPlayer, which uses refined Monte Carlo tree search methods to make gameplay decisions. After the server is connected to its two players, it sends the game description and game state to each player, and gives the active player a limited amount of time (15 seconds) to respond with a valid move. Gameplay continues in this fashion until a terminal state is reached. Our program is capable of starting up multiple instances of the server and multiple players to speed up the running time.
@@ -180,31 +210,5 @@ We also extensively tested the genetic algorithm's generation phase, making sure
 
 \section{Conclusion}
 % reiterate approach, findings
-
-
-\begin{thebibliography}{}
-
-\bibitem[\protect\citename{Srivastava et al.}2014]{Srivastava:14}
-Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov.
-\newblock 2014.
-\newblock Dropout: A Simple Way to Prevent Neural Networks from Overfitting. {\em Journal of Machine Learning Research},15(2014):1929-1958.
-
-\bibitem[\protect\citename{Nielson}2015]{Nielson:15}
-Michael Nielson.
-\newblock 2015.
-\newblock Neural Networks and Deep Learning. {\em Determination Press}.
-\newblock http://neuralnetworksanddeeplearning.com
-
-\bibitem[\protect\citename{RGU}]{RGU}
-Robert Gordon University.
-\newblock The Backpropagation Algorithm.
-\newblock https://www4.rgu.ac.uk/files/chapter3\%20-\%20bp.pdf
-
-\bibitem[\protect\citename{Repo}2013]{Repo:13}
-M. Lichman.
-\newblock UCI Machine Learning Repository.
-\newblock University of California, School of Information and Computer Science.
-\newblock https://archive.ics.uci.edu/ml
-\end{thebibliography}
 
 \end{document}
