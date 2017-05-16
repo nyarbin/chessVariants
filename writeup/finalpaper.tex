@@ -48,9 +48,6 @@ and balancing variants of chess can then be generalized and expanded to cover
 a much wider field of games.
 
 \section{Encoding Chess-Like Games}
-%define a ride!
-%define symmetries from metagame
-
 Researchers in automated game design are presently focused on short, simple
 videogames with few rules. As far as we know, it has been many years since
 someone attempted to construct a system for generating chess-like games, and the
@@ -137,11 +134,13 @@ rideLength:7,\\
 symmetries:[SIDE, DIAGONAL]
 \end{enumerate}
 
-Recall that diagonal symmetry is symmetry over the $y=x$ axis. This allows the knight movement rule to be encoded simply as one move with all 3 kinds of symmetry. Also recall that a ride is defined as consective movements where no intervening square is occupied, except for perhaps the last square on a capture move. The queen can traverse the entire board if not blocked, so she has a ride length of 7 to represent 7 consecutive movements in the direction (1,0) or (1,1). Both of the examples here have the same rules for capture and movement. A pawn would have two different rules in order to encode that a pawn can move forward if not blocked by another piece, and can only capture diagonally. Every piece in our encodings has side symmetry (across the $y$ axis) for aesthetic reasons.
+Recall that diagonal symmetry is symmetry over the $y=x$ axis. This was renamed from Pell's rotational symmetry. This allows the knight movement rule to be encoded simply as one move with all 3 kinds of symmetry. Also recall that a ride is defined as consective movements where no intervening square is occupied, except for perhaps the last square on a capture move. The queen can traverse the entire board if not blocked, so she has a ride length of 7 to represent 7 consecutive movements in the direction (1,0) or (1,1). Both of the examples here have the same rules for capture and movement. A pawn would have two different rules in order to encode that a pawn can move forward if not blocked by another piece, and can only capture diagonally. Every piece in our encodings has side symmetry (across the $y$ axis) for aesthetic reasons.
 
 When running the algorithm, there are $N$ surviving variants after a round of selection. During the generation phase, we generate an additional $N$ candidate variants for the next round using mutation and recombination. A candidate is mutated by adding new pieces to its set of pieces, by deleting pieces, or by changing the movement rules of its existing pieces. Two candidates are recombined into a new candidate by picking randomly among the two parents' pieces to create a new set of pieces. The original $N$ variants also remain in the pool of survivors, unchanged.
 
 After the generation phase comes the selection phase, where candidates are evaluated using the GGP players, and then some candidates are thrown out before the next generation phase. In keeping with the spirit of games, we decided to use tournament selection to select $N$ survivors from the $2N$ candidates. A fitness score is calculated for each candidate based on the results from the GGP players, and then candidates are randomly paired with each other. The candidate with the higher fitness score in each pair is selected to survive. Note that in this scheme, the candidate with the best fitness score will always survive, and candidates with higher scores are more likely to survive, but not guaranteed.
+
+Fitness values are calculated based on statistics collected by the GGP players. To keep games fair, we would like the win rate to be about $1/2$ for each player, so the fitness value is calculated based on deviation from this win rate. We currently use only the win rate of white vs black to determine fitness, but we would like to use other metrics in the future to tailor our results. Incorporating the average length of games would help make sure that games aren't too short or too long. Pieces also should not be too complicated for human users to remember, so pieces with few movement rules should be preferred over those with long lists of rules.
 
 \section{Implementation}
 % Decided to have players place pieces to simplify game generation.
@@ -157,16 +156,30 @@ game's state, which involves a great deal of information on which pieces have
 moved at all (for pawn moves and castling) and which pieces might move to
 certain places (for check and related concepts). All of this is in addition to 
 
+\subsection{Running the players}
+We used the GGP server from GGP.org to host our games. This server sends data over a network using HTTP requests to communicate with the players. Our GGP Player was the award winning CadiaPlayer, which uses refined Monte Carlo tree search methods to make gameplay decisions. After the server is connected to its two players, it sends the game description and game state to each player, and gives the active player a limited amount of time (15 seconds) to respond with a valid move. Gameplay continues in this fashion until a terminal state is reached. Our program is capable of starting up multiple instances of the server and multiple players to speed up the running time.
+
 \section{Results}
+We were not able to run the code on chess variants because we were not able to work out all the bugs with generating the GDL code from an encoding. However, we were able to execute some benchmarks that give some idea about how the solver will perform if our system was fully functional. We also were able to test most parts of the system individually to make sure that they run according to the specification.
+
+Before testing with chess variants, we tested the players with Tic-Tac-Toe, which is a very simple game with a decision tree that can be constructed very easily. As expected, the CadiaPlayer solvers are able to play this game optimally, and always ends the game in a draw when facing against itself. However, the CadiaPlayer still takes all the time it is given before making a decision. It is therefore critical to choose an appropriate amount of time for a given game in order to speed up computation so that gameplay doesn't hang while the CadiaPlayer is already finished, or while it traversing very deep levels of the decision tree with no real hope of learning much more. The players were still able to play optimally when given only 3 seconds to respond with a move in Tic-Tac-Toe.
+
+We tested the solver on harder games like connect four and chess. The solver was able to play connect four competitively, but was not very competent at chess, and seemed to make somewhat random movements. This is likely due to the large branching factor of chess, since there are so many moves to consider. Connect four is somewhat complex, but because there are only up to 8 possible moves to consider in any given state, so the decision tree is still manageable. We were aware of the large branching factor of chess from the start of our project, and we decided to stick with smaller boards with a few pieces on each side to lessen the problem.
+
+We also extensively tested the genetic algorithm's generation phase, making sure that it creates valid variants. We chose probabilities for each type of mutation (adding/deleting pieces, adding/deleting moves of pieces, changing movement vectors and symmetries) to make sure mutations were not too drastic.
 
 \section{Discussion}
-
+% stuff on costs -> incorporating it into the games? better calculation
+% stuff on redundancy of encodings
 
 \section{Comparison to Proposal}
 
 
-\section{Conclusion}
+\section{Future Work}
+% how to test! -> start small, work up
 
+\section{Conclusion}
+% reiterate approach, findings
 
 
 \begin{thebibliography}{}
