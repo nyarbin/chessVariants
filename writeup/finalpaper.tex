@@ -211,7 +211,7 @@ We mainly stayed true to our original proposal while developing our project. The
 
 \subsection{Evaluating Games}
 
-It would also be nice to figure out what makes a chess variant easier to learn for the CadiaPlayer. That would involve deeper analysis of the game states and analysis of the CadiaPlayer's internal states to figure out how the CadiaPlayer responds to changes between variants.
+It would be nice to figure out what makes a chess variant easier to learn for the CadiaPlayer. That would involve deeper analysis of the game states and analysis of the CadiaPlayer's internal states to figure out how the CadiaPlayer responds to changes between variants.
 
 
 \subsection{Improving Performance}
@@ -232,6 +232,14 @@ Most obviously, our current generator does not (and cannot) produce the standard
 "front rank" of pawns that appears in most versions of chess. Adding this in as
 an element that the generator could choose to add to a game would be fairly
 straightforward.
+
+Defining "check" in GDL is nontrivial, as discussed above, but rules around
+check are also not strictly necessary for chess. Optimal strategy in chess that
+does not have check, after all, is almost the same as in the game with check,
+absent the occasional forced stalemate. Since it would likely involve a
+substantial performance reduction, rules that require checking for "threats"
+like check should likely be omitted absent major efficiency gains in automated
+players.
 
 Our code currently lacks three major features of Metagame: leaps, promotions,
 and drops. Leaps, as stated above, are a movement option. A promotion is a rule
