@@ -38,9 +38,63 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 
 \section{Introduction}
 %Intro here - what's the problem?
+% talk about GDL, METAGAME, automated game design
+Automated game design is a relatively new topic in artificial intelligence
+research. %TODO more here
+
+% Discussion of goals re: interesting+balanced games; (read and) cite AGD
+% paper(s).
+% Some simple discussion of GGP and general game analysis
+
+We focus on chess because it is a good model of a larger genre of positional
+strategy games, which are both interesting to humans and easily amenable to
+generic analysis, potentially by computers. Principles developed for creating
+and balancing variants of chess can then be generalized and expanded to cover
+a much wider field of games.
 
 \section{Encoding Chess-Like Games}
-% talk about GDL, METAGAME, automated game design
+
+Researchers in automated game design are presently focused on short, simple
+videogames with few rules. As far as we know, it has been many years since
+someone attempted to construct a system for generating chess-like games, and the
+only language we could discover for encoding such games is no longer being
+maintained.
+
+On the analysis side of things, an extension of Datalog called the Game
+Description Language has become the standard language for formally specifying
+games in a manner that can be understood by generic computer players. As there
+are a number of existing players and masters that make use of GDL, we decided to
+use it as well.
+
+% Discussion of Metagame terminology (possibly break into sidebar?)
+As discussed in \cite{agd1}, Pell \cite{metagame} did a great deal of work to
+define "chess-like" games formally, in his Metagame workbench for general game
+players. While we did not use the specification language he defined, his
+terminology and mathematical work was quite useful. The key terms used here are
+described below.
+
+\begin{description}
+   \item [Direction Vector] A direction vector \(\langle x,y \rangle\) is simply
+      a vector over the chessboard. \(x\) represents a difference in file and
+      \(y\) represents a difference in rank. A positive vector represents a move
+      away from white and to white's right. For example, one of a knight's
+      possible moves can be described by \(\langle 1,2 \rangle\), and a white
+      pawn's standard move is in the direction \(\langle 0,1 \rangle\).
+   \item [Symmetry] Pell defines \textit{forward}, \textit{side}, and
+      \textit{rotation} symmetries for his vectors. \textit{Forward} and
+      \textit{side} symmetries negate the \(y\) and \(x\) values of the vector,
+      respectively, while the \textit{rotation} symmetry swaps them.
+   \item [Leap] A leap describes a move where intervening squares on the board
+      do not matter; only the destination square has any effect on the move's
+      legality, and only the destination can be affected.
+   \item [Ride] A ride is a series of leaps in a particular direction, sometimes
+      with a maximum number of repetitions. All squares between the start and
+      the end of a ride must be empty. A pawn's first-turn move is a ride with
+      length \(2\).
+   \item [Hop] A hop is a ride where some of the squares must be contain a
+      piece, possibly of a specific type.
+\end{description}
+% End Metagame stuff
 
 \section{Search Algorithms}
 
@@ -52,6 +106,10 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 \subsection{Encoding the Game}
 % talk about encoding decisions in GDL
 % cite speedchess; alloyGGP
+Encoding chess in GDL presents a number of problems due to the complexity of the
+game's state, which involves a great deal of information on which pieces have
+moved at all (for pawn moves and castling) and which pieces might move to
+certain places (for check and related concepts). All of this is in addition to 
 
 \section{Results}
 
