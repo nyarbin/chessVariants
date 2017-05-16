@@ -149,6 +149,7 @@ Fitness values are calculated based on statistics collected by the GGP players. 
 
 \subsection{Generating Pieces}
 % talk about balance decisions
+% talk about rules we omitted
 
 \subsection{Encoding the Game}
 % talk about encoding decisions in GDL
@@ -207,6 +208,47 @@ We also extensively tested the genetic algorithm's generation phase, making sure
 We mainly stayed true to our original proposal while developing our project. The encoding was perhaps simpler in our implementation than in our original idea because we neglect the positioning of pieces, and leave that to the CadiaPlayer to decide best positions for each player. We did manage to include pawn like pieces, with capture rules that differ from their regular movement rules. We expanded on the implementation details greatly, bringing in the CadiaPlayer to actually simulate the GDL that we would generate. In the end, the program is built to do what was originally spelled out: take some board and some army conditions as input, and return a fun chess variant as output.
 
 \section{Future Work}
+
+\subsection{Evaluating Games}
+
+\subsection{Improving Performance}
+
+Almost all of our runtime is spent processing GDL through Cadia and the GGP
+server. Aside from bug fixes, the first obvious performance improvement to be
+made in this area would be the addition of \textit{base} and \textit{input}
+clauses to our generated code. These are optional (and somewhat nonstandard)
+clauses that many players use to speed up their analysis of games by never
+considering illegal moves or impossible game states.
+
+\subsection{Features Omitted}
+
+As discussed above, we omitted a number of features defined in \cite{metagame},
+and features that might be considered "typical" in chess variants.
+
+Most obviously, our current generator does not (and cannot) produce the standard
+"front rank" of pawns that appears in most versions of chess. Adding this in as
+an element that the generator could choose to add to a game would be fairly
+straightforward.
+
+Our code currently lacks three major features of Metagame: leaps, promotions,
+and drops. Leaps, as stated above, are a movement option. A promotion is a rule
+by which a piece can change its type, usually upon reaching the opponent's back
+rank. Both of these would complicate the piece generator, since their mechanics
+and their value depend on the existence and value of other pieces. Pawn
+promotions, as in chess, would be very easy to implement, though; it would be a
+simple change to the generated GDL for pawns, once such was added. Drops are
+another more complicated thing to add, this time to the GDL. A drop is a move
+where one player adds a piece (usually one they have captured) to the board that
+was not there before. Adding drops would require that the GDL code track which
+pieces a player has captured, and which they have dropped. This would not be too
+difficult, since captures are already slightly separated from regular moves, but
+it would be nontrivial.
+
+Metagame also allows for variation in the players' goal; this would be more or
+less straightforward to add to the game, depending on what alternate goals are
+allowed and what effects these alternate goals have on piece placement rules. If
+desired, different goals could be scored differently, allowing players to aim
+for alternate objectives if their primary goal is not likely to be achieved.
 
 \section{Conclusion}
 % move to future work?
