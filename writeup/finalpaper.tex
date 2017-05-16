@@ -11,7 +11,7 @@
 \usepackage{tikz}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
-\title{TITLE HERE}
+\title{Generating Chess Variants for Simulation on General Game Players}
 
 \author{Ben Reis \\
   Johns Hopkins University\\
@@ -36,8 +36,28 @@ General Game Playing (GGP) programs can learn to play any game it is given a des
 \section{Introduction}
 %Intro here - what's the problem?
 % talk about GDL, METAGAME, automated game design
+Strategy games are a popular passtime for humans, and also a topic of great
+interest to artificial intelligence researchers. AI researchers are mostly
+focused on the aspects of play that reflect intelligent decision making, but
+humans also have a great deal of interest in the fun of the game.
+
+We have found little, if any, formal study of what sort of qualities separate
+strategy games that humans enjoy from those that they don't, although there are
+some simple heuristics that designers use. It is hard to test these heuristics,
+though, since there is no easy way to generate large numbers of games to test,
+assuming a researcher had a group of people willing to test them, and even then
+such a group of people is unlikely to contain a reasonable distribution of
+skilled and unskilled players.
+
+Such players could be found in the output of AI researchers focused on general
+game playing, but these players require very carefully encoded games. These
+games are currently handwritten by researchers, usually encoding games that
+already exist.
+
 Automated game design is a relatively new topic in artificial intelligence
-research. %TODO more here
+research.\cite{agd1} Currently, researchers are focused on simple videogames
+that can serve as proofs-of-concept; creating complex strategy games is a
+substantially different task.
 
 % Discussion of goals re: interesting+balanced games; (read and) cite AGD
 % paper(s).
@@ -150,6 +170,9 @@ Fitness values are calculated based on statistics collected by the GGP players. 
 \subsection{Generating Pieces}
 % talk about balance decisions
 % talk about rules we omitted
+In creating our encoding, we decided to leave out more complex movements like the Hop from Pell's encoding, which requires a piece to jump over another piece in order to move. We decided that keeping the encoding simple would make translation from encoding to GDL easier, and that we could always add complexity to the encoding later.
+ 
+Another consideration is the fact that encoding are not unique. Because of the symmetry parameters, there are different ways to encode the same basic direction. We resolved this by feeding the translator a revised version of the encoding with all duplicates removed, instead of enforcing extra conditions while creating the encoding, in order to again keep the GDL conversion simpler. This means that certain mutations that change the encoding of a candidate variant may not actually change the moveset or the GDL of that candidate.
 
 \subsection{Encoding the Game}
 % talk about encoding decisions in GDL
@@ -199,11 +222,6 @@ We tested the solver on harder games like connect four and chess. The solver was
 
 We also extensively tested the genetic algorithm's generation phase, making sure that it creates valid variants. We chose probabilities for each type of mutation (adding/deleting pieces, adding/deleting moves of pieces, changing movement vectors and symmetries) to make sure mutations were not too drastic.
 
-\section{Discussion}
-
-% stuff on costs -> incorporating it into the games? better calculation
-% stuff on redundancy of encodings
-
 \section{Comparison to Proposal}
 We mainly stayed true to our original proposal while developing our project. The encoding was perhaps simpler in our implementation than in our original idea because we neglect the positioning of pieces, and leave that to the CadiaPlayer to decide best positions for each player. We did manage to include pawn like pieces, with capture rules that differ from their regular movement rules. We expanded on the implementation details greatly, bringing in the CadiaPlayer to actually simulate the GDL that we would generate. In the end, the program is built to do what was originally spelled out: take some board and some army conditions as input, and return a fun chess variant as output.
 
@@ -213,6 +231,9 @@ We mainly stayed true to our original proposal while developing our project. The
 
 It would be nice to figure out what makes a chess variant easier to learn for the CadiaPlayer. That would involve deeper analysis of the game states and analysis of the CadiaPlayer's internal states to figure out how the CadiaPlayer responds to changes between variants.
 
+Other useful data could probably be found by running other players on the games
+generated, both to check what strategies do best in what games and to avoid
+making games that are in some sense only for Cadia.
 
 \subsection{Improving Performance}
 
@@ -265,6 +286,6 @@ for alternate objectives if their primary goal is not likely to be achieved.
 % move to future work?
 We have implemented the framework to achieve our goal of generating variants. Our encoding allows us to easily generate new variants to test. This separates the problems of figuring out what variants are interesting to test, and figuring out how to test a variant. We were unable to finish translation of encoding into game description, but once this part is plugged in, we should be able to test the variants that we have generated.
 
-\printbibliography
-
+\bibliographystyle{plain}
+\bibliography{paper}
 \end{document}
