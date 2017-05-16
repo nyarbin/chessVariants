@@ -8,7 +8,7 @@ public class Description {
   public static String gdlOutput(Board board) {
     ArrayList<Piece> pieces = board.armies();
     String toReturn = headerInfo(pieces) + baseRules() + baseQueries() +
-      "piece_" + stateDynamics(Integer.toString(pieces.get(0).ID()));
+      stateDynamics("piece_" + Integer.toString(pieces.get(0).ID()));
     toReturn += endgame(pieces.get(0));
     toReturn += placePhase(board.start(), board.len(), board.width(),
         board.maxScore(), pieces);
@@ -75,7 +75,7 @@ public class Description {
     toReturn += "(<= (legal ?player ?placement)\n (true (phase placing))\n" +
       " (okPlace ?player ?placement))\n";
     toReturn += "(<= (legal ?player noop)\n (role ?player)\n" +
-      " (true (phase placing))\n (true (?player donePlacing)))\n";
+      " (true (phase placing))\n (true (done ?player)))\n";
     return toReturn;
   }
 
