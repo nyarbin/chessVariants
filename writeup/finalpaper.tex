@@ -14,8 +14,10 @@
 \title{TITLE HERE}
 
 \author{Ben Reis \\
-  ADDRESS \\
-  {\tt email}
+  Johns Hopkins University\\
+  3501 Saint Paul st.\\
+  Baltimore, MD 21218, USA\\
+  {\tt breis3@jhu.edu}
   \And
   Andrew Zhu \\
   Johns Hopkins University \\
@@ -48,8 +50,6 @@ and balancing variants of chess can then be generalized and expanded to cover
 a much wider field of games.
 
 \section{Encoding Chess-Like Games}
-%define a ride!
-%define symmetries from metagame
 
 Researchers in automated game design are presently focused on short, simple
 videogames with few rules. As far as we know, it has been many years since
@@ -155,7 +155,35 @@ After the generation phase comes the selection phase, where candidates are evalu
 Encoding chess in GDL presents a number of problems due to the complexity of the
 game's state, which involves a great deal of information on which pieces have
 moved at all (for pawn moves and castling) and which pieces might move to
-certain places (for check and related concepts). All of this is in addition to 
+certain places (for check and related concepts). All of this is in addition to
+the \(32\) pieces that may be on the board and the \(64\) cells that make it up.
+
+The work of Alex Landau in writing a slightly trimmed-down version of chess, as
+well as his more general work in GDL was invaluable for the code generation
+process. The fundamental arithmetic clauses we use are his directly, and many
+other elements of our code is based on his Speedchess \cite{spdchess}
+implementation of the game.
+
+Other than a few counters and a phase marker, game state is tracked entirely by
+which squares contain pieces. Other cells are essentially "brought into
+existence" as they are needed. This greatly reduces the ammount of state that
+players and the game master need to handle, but increases the size of the rules,
+as capture and non-capture moves must be handled separately.
+
+To reduce the number of games which need to be evaluated, we have players place
+pieces themselves, purchasing them from a list that defines the game being
+played. In an extra phase before the game begins, players simultaneously place
+one piece each, as they choose, anywhere on a number of ranks associated with
+the variant they are playing. Each must place exactly one king, and the king
+must be placed last. There are no pawns unless the piece generation algorithm
+produces them. Once both players have placed their king, the game begins.
+
+To simplify both the GDL code generation process and the resulting output, we
+have chosen to omit moves whose legality depends on facts other than the current
+state of the board. We also ignore the notion of check; players are instead
+required to capture the enemy king. Since GDL requires that games be finite in
+length, we force a draw after a number of moves, as is common in implementations
+of boardgames which can draw.
 
 \section{Results}
 
