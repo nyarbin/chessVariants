@@ -200,6 +200,7 @@ We tested the solver on harder games like connect four and chess. The solver was
 We also extensively tested the genetic algorithm's generation phase, making sure that it creates valid variants. We chose probabilities for each type of mutation (adding/deleting pieces, adding/deleting moves of pieces, changing movement vectors and symmetries) to make sure mutations were not too drastic.
 
 \section{Discussion}
+
 % stuff on costs -> incorporating it into the games? better calculation
 % stuff on redundancy of encodings
 
@@ -207,7 +208,6 @@ We also extensively tested the genetic algorithm's generation phase, making sure
 
 
 \section{Future Work}
-% how to test! -> start small, work up
 
 \subsection{Evaluating Games}
 
@@ -251,7 +251,11 @@ desired, different goals could be scored differently, allowing players to aim
 for alternate objectives if their primary goal is not likely to be achieved.
 
 \section{Conclusion}
-% reiterate approach, findings
+% move to future work?
+It would also be nice to figure out what makes a chess variant easier to learn for the CadiaPlayer. That would involve deeper analysis of the game states and analysis of the CadiaPlayer's internal states to figure out how the CadiaPlayer responds to changes between variants.
+
+We have implemented the framework to achieve our goal of generating variants. Our encoding allows us to easily generate new variants to test. This separates the problems of figuring out what variants are interesting to test, and figuring out how to test a variant. We were unable to finish translation of encoding into game description, but once this part is plugged in, we should be able to test the variants that we have generated.
+
 \printbibliography
 
 \end{document}
